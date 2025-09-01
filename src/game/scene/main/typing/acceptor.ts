@@ -1,5 +1,5 @@
-import { Node } from "./node";
-import { NodeSearcher } from "./node-searcher";
+import { Node } from './node';
+import { NodeSearcher } from './node-searcher';
 
 export class Chara {
   value: string;
@@ -15,10 +15,7 @@ export class Chara {
    * @returns 子音の配列 (あ行の平仮名または平仮名以外の場合は空配列)
    */
   getConsonants(): string[] {
-    if (
-      /[あ-おーa-z0-9!?,.[\]]/.test(this.value) ||
-      this.node.children === undefined
-    ) {
+    if (/[あ-おーa-z0-9!?,.[\]]/.test(this.value) || this.node.children === undefined) {
       return [];
     }
     return this.node.children.map((child) => child.char);
@@ -39,7 +36,7 @@ export class Acceptor {
     this.charas = charas;
     this.idx = 0;
     this.count = 0;
-    this.history = "";
+    this.history = '';
     this.existsNextChara = this.idx < this.charas.length - 1;
     this.end = false;
     this.acceptN1 = false;
@@ -53,9 +50,9 @@ export class Acceptor {
    */
   acceptable(char: string): boolean {
     switch (this.charas[this.idx].value) {
-      case "ん":
+      case 'ん':
         // 「ん」を1回のnで入力できるかの判定処理
-        if (char != "n" && this.acceptN1) {
+        if (char != 'n' && this.acceptN1) {
           // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
           const consonants = this.charas[this.idx + 1].getConsonants();
           return consonants.find((c) => c == char) !== undefined;
@@ -72,7 +69,7 @@ export class Acceptor {
    */
   accept(char: string) {
     switch (this.charas[this.idx].value) {
-      case "っ":
+      case 'っ':
         {
           const prevIdx = this.idx;
           this.step(char);
@@ -90,8 +87,8 @@ export class Acceptor {
           }
         }
         break;
-      case "ん":
-        if (char != "n" && this.acceptN1) {
+      case 'ん':
+        if (char != 'n' && this.acceptN1) {
           // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
           const consonants = this.charas[this.idx + 1].getConsonants();
           if (consonants.find((c) => c == char)) {
@@ -138,11 +135,7 @@ export class Acceptor {
     // 2. 現在「n」が1回だけ入力されている
     // 3. 次に入力する文字が存在する
     // 4. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
-    if (
-      this.searcher.history.length == 1 &&
-      this.searcher.history[0] == "n" &&
-      this.isAcceptableN1(this.idx)
-    ) {
+    if (this.searcher.history.length == 1 && this.searcher.history[0] == 'n' && this.isAcceptableN1(this.idx)) {
       this.acceptN1 = true;
     }
   }
@@ -165,20 +158,18 @@ export class Acceptor {
     // 入力履歴
     const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
-    const current = this.isAcceptableN1(this.idx)
-      ? "n"
-      : this.searcher.getPrediction();
+    const current = this.isAcceptableN1(this.idx) ? 'n' : this.searcher.getPrediction();
     // 未入力文字の予測
     const prediction = this.charas
       .slice(this.idx + 1)
       .map((chara, i) => {
         // 「ん」が1回のnで入力できるなら'n'を返す
         if (this.isAcceptableN1(this.idx + 1 + i)) {
-          return "n";
+          return 'n';
         }
         return chara.node.getPrediction();
       })
-      .reduce((buf, prediction) => buf + prediction, "");
+      .reduce((buf, prediction) => buf + prediction, '');
     return history + current + prediction;
   }
 
@@ -190,7 +181,7 @@ export class Acceptor {
   isAcceptableN1(idx: number): boolean {
     const chara = this.charas[idx];
     const nextIdx = idx + 1;
-    if (chara.value == "ん" && nextIdx < this.charas.length) {
+    if (chara.value == 'ん' && nextIdx < this.charas.length) {
       const nextChara = this.charas[nextIdx];
       return !/[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value);
     }

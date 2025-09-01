@@ -1,8 +1,8 @@
-import { Word } from "../word/word";
-import { Event } from "./event";
-import { Main } from "./scene/main/main";
-import { Scene } from "./scene/scene";
-import { Title } from "./scene/title/title";
+import { Word } from '../word/word';
+import { Event } from './event';
+import { Main } from './scene/main/main';
+import { Scene } from './scene/scene';
+import { Title } from './scene/title/title';
 
 export enum SceneType {
   Title,

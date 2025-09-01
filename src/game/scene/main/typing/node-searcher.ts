@@ -1,4 +1,4 @@
-import { Node } from "./node";
+import { Node } from './node';
 
 export class NodeSearcher {
   root: Node;
@@ -35,10 +35,9 @@ export class NodeSearcher {
    * @returns
    */
   getPrediction(): string {
-    const history = this.history.join("");
+    const history = this.history.join('');
     const children = this.current.children;
-    const prediction =
-      children === undefined ? "" : children[0].getPrediction();
+    const prediction = children === undefined ? '' : children[0].getPrediction();
     return history + prediction;
   }
 }
