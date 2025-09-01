@@ -2,9 +2,9 @@ import { Acceptor, Chara } from './acceptor';
 import { createNode } from './node';
 
 export class AcceptorFactory {
-  patterns: { [key: string]: string[] };
+  patterns: Record<string, string[]>;
 
-  constructor(patterns: { [key: string]: string[] }) {
+  constructor(patterns: Record<string, string[]>) {
     this.patterns = patterns;
   }
 

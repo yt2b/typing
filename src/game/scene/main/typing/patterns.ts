@@ -1,4 +1,4 @@
-const singlePatterns: { [key: string]: string[] } = {
+const singlePatterns: Record<string, string[]> = {
   あ: ['a'],
   い: ['i'],
   う: ['u'],
@@ -126,7 +126,7 @@ const singlePatterns: { [key: string]: string[] } = {
   '.': ['.'],
 };
 
-const tmpMultiPatterns: { [key: string]: string[] } = {
+const tmpMultiPatterns: Record<string, string[]> = {
   いぇ: ['ye'],
   きゃ: ['kya'],
   きぃ: ['kyi'],
@@ -221,7 +221,7 @@ export const createMultiPattern = (input: string): string[] => {
  * 文字の入力パターンを列挙した連想配列を生成する
  * @returns 入力パターンの連想配列
  */
-export const createPatterns = (): { [key: string]: string[] } => {
+export const createPatterns = (): Record<string, string[]> => {
   // 複数文字パターンにその他の入力方法を追加する
   // 例:「じゃ」に["zilya", "zixya", "jilya", "jixya"]を追加する
   const multiPatterns = Object.entries(tmpMultiPatterns).map(([key, value]) => [
