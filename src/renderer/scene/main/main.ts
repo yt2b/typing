@@ -46,11 +46,10 @@ export class Main implements Scene {
     this.effectText = new Text(this.ctx, '#ffffff', `bold 72px 'Yu Gothic', 'Meiryo', sans-serif`);
     this.effects = [];
     this.states = {
-      [GameMain.State.Fadein]: this.renderFadeIn.bind(this),
+      [GameMain.State.FadeIn]: this.renderFadeIn.bind(this),
       [GameMain.State.Wait]: this.renderWait.bind(this),
       [GameMain.State.Typing]: this.renderTyping.bind(this),
-      [GameMain.State.Result]: this.renderResult.bind(this),
-      [GameMain.State.Fadeout]: this.renderFadeOut.bind(this),
+      [GameMain.State.FadeOut]: this.renderFadeOut.bind(this),
     };
   }
 
@@ -114,10 +113,6 @@ export class Main implements Scene {
       effect.draw();
       return effect.isAlive();
     });
-  }
-
-  renderResult(main: GameMain) {
-    this.renderTyping(main);
   }
 
   renderFadeOut(main: GameMain) {

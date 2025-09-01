@@ -17,14 +17,13 @@ export type MainParam = {
 
 export class Main implements Scene {
   static State = {
-    Fadein: 0,
+    FadeIn: 0,
     Wait: 1,
     Typing: 2,
-    Result: 3,
-    Fadeout: 4,
+    FadeOut: 3,
   } as const;
   static readonly FADE_FRAMES = 10;
-  state: number = Main.State.Fadein;
+  state: number = Main.State.FadeIn;
   count: number = 0;
   timeLimit: number = 0;
   startTime: number = 0;
@@ -38,16 +37,15 @@ export class Main implements Scene {
     this.human = new Human();
     this.manager = new TypistManager(words, factory, [this.human, new Npc(0.5, 100, 2000)]);
     this.states = {
-      [Main.State.Fadein]: this.runFadeIn.bind(this),
+      [Main.State.FadeIn]: this.runFadeIn.bind(this),
       [Main.State.Wait]: this.runWait.bind(this),
       [Main.State.Typing]: this.runTyping.bind(this),
-      [Main.State.Result]: this.runResult.bind(this),
-      [Main.State.Fadeout]: this.runFadeOut.bind(this),
+      [Main.State.FadeOut]: this.runFadeOut.bind(this),
     };
   }
 
   initialize(param?: unknown): void {
-    this.state = Main.State.Fadein;
+    this.state = Main.State.FadeIn;
     this.count = 0;
     if (param !== undefined) {
       const { timeLimit, accuracy, kpm, aveStartTime } = param as MainParam;
@@ -87,7 +85,7 @@ export class Main implements Scene {
     const events = this.manager.update();
     this.currentTime = new Date().getTime();
     if (this.currentTime - this.startTime >= this.timeLimit) {
-      this.state = Main.State.Result;
+      this.state = Main.State.FadeOut;
       this.count = 0;
     }
     return { sceneType: SceneType.Main, events: events };
