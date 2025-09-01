@@ -1,6 +1,6 @@
-import { Vector2 } from '../../commons/vector';
+import { Vector2 } from '../../../commons/vector';
 import { Effect } from './effect';
-import { Text } from '../../commons/text/text';
+import { Text } from '../../../commons/text/text';
 
 export class AddScore implements Effect {
   ctx: CanvasRenderingContext2D;
