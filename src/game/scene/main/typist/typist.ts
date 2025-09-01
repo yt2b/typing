@@ -6,6 +6,8 @@ export class Typist {
   player: Player;
   acceptor: Acceptor;
   score: number = 0;
+  countTotalTyping: number = 0;
+  countMissTyping: number = 0;
 
   constructor(player: Player, acceptor: Acceptor) {
     this.player = player;
@@ -32,12 +34,14 @@ export class Typist {
     if (char === undefined) {
       return undefined;
     }
+    this.countTotalTyping++;
     if (this.acceptor.acceptable(char)) {
       // 入力成功
       this.acceptor.accept(char);
       return EventType.Typing;
     } else {
       // 入力ミス
+      this.countMissTyping++;
       return EventType.MissTyping;
     }
   }

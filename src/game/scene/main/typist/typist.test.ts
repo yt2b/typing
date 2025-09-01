@@ -42,5 +42,7 @@ describe('Typist', () => {
       expect(typist.update()).toEqual(eventType);
       expect(typist.isEnd()).toEqual(isEnd);
     });
+    expect(typist.countTotalTyping).toEqual(input.length);
+    expect(typist.countMissTyping).toEqual(1);
   });
 });
