@@ -8,12 +8,12 @@ import { TypistManager } from './typist/typist-manager';
 import { Scene, SceneResult } from '../scene';
 import { SceneType } from '../../game';
 
-export type MainParam = {
+export interface MainParam {
   timeLimit: number;
   accuracy: number;
   kpm: number;
   aveStartTime: number;
-};
+}
 
 export class Main implements Scene {
   static State = {

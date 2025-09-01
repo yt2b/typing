@@ -4,10 +4,10 @@ import { SceneType } from '../../game';
 import { MainParam } from '../main/main';
 import { Scene, SceneResult } from '../scene';
 
-export type Difficultiy = {
+export interface Difficultiy {
   name: string;
   param: MainParam;
-};
+}
 
 export class Title implements Scene {
   static State = {
