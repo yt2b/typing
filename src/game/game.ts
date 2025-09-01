@@ -37,7 +37,9 @@ export class Game {
     const { sceneType, events, param } = this.getScene().update(key);
     this.nextSceneType = sceneType;
     this.param = param;
-    this.events = this.events.concat(events);
+    if (events !== undefined) {
+      this.events = this.events.concat(events);
+    }
   }
 
   /**

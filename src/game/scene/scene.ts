@@ -1,6 +1,12 @@
 import { Event } from '../event';
 import { SceneType } from '../game';
 
+export interface SceneResult {
+  sceneType: SceneType;
+  events?: Event[];
+  param?: unknown;
+}
+
 export interface Scene {
   /**
    * 初期化処理
@@ -12,5 +18,5 @@ export interface Scene {
    * ゲームの状態を更新する
    * @param key キー入力
    */
-  update(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown };
+  update(key?: string): SceneResult;
 }

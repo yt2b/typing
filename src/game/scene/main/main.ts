@@ -1,11 +1,11 @@
 import { Word } from '../../../word/word';
-import { Event, EventType } from '../../event';
+import { EventType } from '../../event';
 import { Human } from './player/human';
 import { Npc } from './player/npc';
 import { AcceptorFactory } from './typing/acceptor-factory';
 import { createPatterns } from './typing/patterns';
 import { TypistManager } from './typist/typist-manager';
-import { Scene } from '../scene';
+import { Scene, SceneResult } from '../scene';
 import { SceneType } from '../../game';
 
 export type MainParam = {
@@ -31,7 +31,7 @@ export class Main implements Scene {
   currentTime: number = 0;
   human: Human;
   manager: TypistManager;
-  states: Record<number, (key?: string) => { sceneType: SceneType; events: Event[]; param?: unknown }>;
+  states: Record<number, (key?: string) => SceneResult>;
 
   constructor(words: Word[]) {
     const factory = new AcceptorFactory(createPatterns());
@@ -57,12 +57,12 @@ export class Main implements Scene {
     }
   }
 
-  update(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  update(key?: string): SceneResult {
     this.count++;
     return this.states[this.state](key);
   }
 
-  runFadeIn(_?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runFadeIn(_?: string): SceneResult {
     if (this.count >= Main.FADE_FRAMES) {
       this.state = Main.State.Wait;
       this.count = 0;
@@ -70,7 +70,7 @@ export class Main implements Scene {
     return { sceneType: SceneType.Main, events: [] };
   }
 
-  runWait(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runWait(key?: string): SceneResult {
     if (key == ' ') {
       this.state = Main.State.Typing;
       this.count = 0;
@@ -80,7 +80,7 @@ export class Main implements Scene {
     return { sceneType: SceneType.Main, events: [] };
   }
 
-  runTyping(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runTyping(key?: string): SceneResult {
     if (key !== undefined && key.length == 1) {
       this.human.setKey(key);
     }
@@ -93,11 +93,11 @@ export class Main implements Scene {
     return { sceneType: SceneType.Main, events: events };
   }
 
-  runResult(_?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runResult(_?: string): SceneResult {
     return { sceneType: SceneType.Main, events: [] };
   }
 
-  runFadeOut(_?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
-    return { sceneType: SceneType.Main, events: [] };
+  runFadeOut(_?: string): SceneResult {
+    return { sceneType: SceneType.Main };
   }
 }

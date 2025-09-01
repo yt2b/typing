@@ -1,8 +1,8 @@
 import { Key } from '../../../input/input';
-import { Event, EventType } from '../../event';
+import { EventType } from '../../event';
 import { SceneType } from '../../game';
 import { MainParam } from '../main/main';
-import { Scene } from '../scene';
+import { Scene, SceneResult } from '../scene';
 
 export type Difficultiy = {
   name: string;
@@ -19,7 +19,7 @@ export class Title implements Scene {
   idx: number = 0;
   state: number = Title.State.Select;
   count: number = 0;
-  states: Record<number, (key?: string) => { sceneType: SceneType; events: Event[]; param?: unknown }>;
+  states: Record<number, (key?: string) => SceneResult>;
 
   constructor() {
     this.difficulties = [
@@ -39,11 +39,11 @@ export class Title implements Scene {
     this.count = 0;
   }
 
-  update(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  update(key?: string): SceneResult {
     return this.states[this.state](key);
   }
 
-  runSelect(key?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runSelect(key?: string): SceneResult {
     switch (key) {
       case Key.Up:
         this.idx -= 1;
@@ -62,15 +62,15 @@ export class Title implements Scene {
         this.count = 0;
         break;
     }
-    return { sceneType: SceneType.Title, events: [] };
+    return { sceneType: SceneType.Title };
   }
 
-  runFadeout(_?: string): { sceneType: SceneType; events: Event[]; param?: unknown } {
+  runFadeout(_?: string): SceneResult {
     this.count++;
     if (this.count >= Title.FADE_FRAMES) {
       const param = this.difficulties[this.idx].param;
       return { sceneType: SceneType.Main, events: [{ type: EventType.Select }], param: param };
     }
-    return { sceneType: SceneType.Title, events: [] };
+    return { sceneType: SceneType.Title };
   }
 }
