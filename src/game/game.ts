@@ -1,28 +1,30 @@
 import { Word } from '../word/word';
 import { Event } from './event';
 import { Main } from './scene/main/main';
+import { Result } from './scene/result/result';
 import { Scene } from './scene/scene';
 import { Title } from './scene/title/title';
 
 export enum SceneType {
   Title,
   Main,
+  Result,
 }
 
 export class Game {
   sceneType: SceneType;
   nextSceneType: SceneType;
   param?: unknown;
+  events: Event[] = [];
   scenes: Record<SceneType, Scene>;
-  events: Event[];
 
   constructor(words: Word[]) {
     this.sceneType = this.nextSceneType = SceneType.Title;
     this.scenes = {
       [SceneType.Title]: new Title(),
       [SceneType.Main]: new Main(words),
+      [SceneType.Result]: new Result(),
     };
-    this.events = [];
   }
 
   /**

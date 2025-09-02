@@ -1,0 +1,51 @@
+import { SceneType } from '../../game';
+import { Scene, SceneResult } from '../scene';
+
+export interface Statistics {
+  score: number;
+  countTotalTyping: number;
+  countMissTyping: number;
+}
+
+export class Result implements Scene {
+  static State = {
+    FadeIn: 0,
+    Select: 1,
+    FadeOut: 2,
+  } as const;
+  static readonly FADE_FRAMES = 10;
+  state: number = Result.State.FadeIn;
+  count: number = 0;
+  states: Record<number, (key?: string) => SceneResult>;
+
+  constructor() {
+    this.states = {
+      [Result.State.FadeIn]: this.runFadeIn.bind(this),
+      [Result.State.Select]: this.runSelect.bind(this),
+      [Result.State.FadeOut]: this.runFadeOut.bind(this),
+    };
+  }
+
+  initialize(_?: unknown): void {}
+
+  update(key?: string): SceneResult {
+    this.count++;
+    return this.states[this.state](key);
+  }
+
+  runFadeIn(_?: string): SceneResult {
+    if (this.count >= Result.FADE_FRAMES) {
+      this.state = Result.State.Select;
+      this.count = 0;
+    }
+    return { sceneType: SceneType.Result };
+  }
+
+  runSelect(_?: string): SceneResult {
+    return { sceneType: SceneType.Result };
+  }
+
+  runFadeOut(_?: string): SceneResult {
+    return { sceneType: SceneType.Result };
+  }
+}

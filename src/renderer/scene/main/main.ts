@@ -116,6 +116,7 @@ export class Main implements Scene {
   }
 
   renderFadeOut(main: GameMain) {
+    this.renderTyping(main);
     setBrightNess(this.ctx, main.count / GameMain.FADE_FRAMES);
   }
 }

@@ -91,11 +91,17 @@ export class Main implements Scene {
     return { sceneType: SceneType.Main, events: events };
   }
 
-  runResult(_?: string): SceneResult {
-    return { sceneType: SceneType.Main, events: [] };
-  }
-
   runFadeOut(_?: string): SceneResult {
+    if (this.count >= Main.FADE_FRAMES) {
+      // 結果画面に遷移する
+      const typist = this.manager.typists[0];
+      const statistics = {
+        score: typist.score,
+        countTotalTyping: typist.countTotalTyping,
+        countMissTyping: typist.countMissTyping,
+      };
+      return { sceneType: SceneType.Result, events: [], param: statistics };
+    }
     return { sceneType: SceneType.Main };
   }
 }

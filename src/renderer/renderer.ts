@@ -4,6 +4,7 @@ import { Scene } from './scene/scene';
 import { Scene as GameScene } from '../game/scene/scene';
 import { Main } from './scene/main/main';
 import { Title } from './scene/title/title';
+import { Result } from './scene/result/result';
 
 export class Renderer {
   canvas: HTMLCanvasElement;
@@ -25,6 +26,7 @@ export class Renderer {
     this.scenes = {
       [SceneType.Title]: new Title(this.ctx, this.width, this.height),
       [SceneType.Main]: new Main(this.ctx, this.width, this.height),
+      [SceneType.Result]: new Result(this.ctx, this.width, this.height),
     };
   }
 
