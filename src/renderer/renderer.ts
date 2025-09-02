@@ -43,6 +43,8 @@ export class Renderer {
    * @param game ゲームロジック
    */
   render(sceneType: SceneType, scene: GameScene) {
+    this.ctx.fillStyle = '#f8f8f8';
+    this.ctx.fillRect(0, 0, this.width, this.height);
     this.scenes[sceneType].render(scene);
   }
 }

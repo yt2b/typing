@@ -77,8 +77,6 @@ export class Main implements Scene {
   }
 
   render(scene: GameScene): void {
-    this.ctx.fillStyle = '#f8f8f8';
-    this.ctx.fillRect(0, 0, this.width, this.height);
     const main = scene as GameMain;
     this.states[main.state](main);
   }

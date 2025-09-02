@@ -26,8 +26,6 @@ export class Result implements Scene {
   handle_events(_: Event[]): void {}
 
   render(scene: GameScene): void {
-    this.ctx.fillStyle = '#f8f8f8';
-    this.ctx.fillRect(0, 0, this.width, this.height);
     const result = scene as GameResult;
     this.states[result.state](result);
   }

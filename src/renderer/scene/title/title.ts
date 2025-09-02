@@ -39,8 +39,6 @@ export class Title implements Scene {
   handle_events(_: Event[]): void {}
 
   render(scene: GameScene): void {
-    this.ctx.fillStyle = '#f8f8f8'; //'#ffebcd';
-    this.ctx.fillRect(0, 0, this.width, this.height);
     this.displayText.draw('VS Typing');
     this.description.draw('表示された文章をNPCよりも速く入力してください');
     this.operation.draw('↑↓:選択  <Space>:決定');
