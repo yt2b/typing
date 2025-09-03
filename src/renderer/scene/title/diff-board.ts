@@ -15,16 +15,16 @@ export class DiffBoard {
   speedTextPos: Vector2;
   accuracyTextPos: Vector2;
 
-  constructor(ctx: CanvasRenderingContext2D, largeText: Text, smallText: Text, pos: Vector2) {
+  constructor(ctx: CanvasRenderingContext2D, size: Vector2, largeText: Text, smallText: Text, pos: Vector2) {
     this.ctx = ctx;
     this.largeText = largeText;
     this.smallText = smallText;
     this.pos = pos;
-    this.size = new Vector2(600, 130);
+    this.size = size;
     this.isSelected = false;
     const height = this.largeText.getSize('A').y;
     const y = pos.y + (this.size.y + height) / 2;
-    this.difficultyTextPos = new Vector2(pos.x + 40, y);
+    this.difficultyTextPos = new Vector2(pos.x + 50, y);
     const smallTextWidth = this.smallText.getSize('A').y;
     const smallTextY = this.pos.y + (this.size.y + smallTextWidth) / 2;
     this.timeLimitTextPos = new Vector2(this.difficultyTextPos.x + 200, smallTextY - smallTextWidth * 1.5);

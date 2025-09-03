@@ -21,16 +21,17 @@ export class Title implements Scene {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.displayText = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 90px 'Meiryo', sans-serif`), 80);
-    const text = new Text(this.ctx, '#000000', `bold 30px 'Meiryo', sans-serif`);
-    this.description = new CenterText(this.width, text, 140);
+    this.displayText = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 80px 'Meiryo', sans-serif`), 60);
+    const text = new Text(this.ctx, '#000000', `bold 25px 'Meiryo', sans-serif`);
+    this.description = new CenterText(this.width, text, 110);
     this.operation = new CenterText(this.width, text, height - 10);
-    const largeText = new Text(this.ctx, '#ffffff', `bold 80px 'Meiryo', sans-serif`);
-    const smallText = new Text(this.ctx, '#ffffff', `bold 30px 'Meiryo', sans-serif`);
+    const largeText = new Text(this.ctx, '#ffffff', `bold 70px 'Meiryo', sans-serif`);
+    const smallText = new Text(this.ctx, '#ffffff', `bold 25px 'Meiryo', sans-serif`);
+    const boardSize = new Vector2(550, 110);
     this.boards = [];
     for (let i = 0; i < 3; i++) {
-      const pos = new Vector2((1024 - 600) / 2, 200 + (120 + 50) * i);
-      this.boards.push(new DiffBoard(this.ctx, largeText, smallText, pos));
+      const pos = new Vector2((width - boardSize.x) / 2, 150 + (boardSize.y + 20) * i);
+      this.boards.push(new DiffBoard(this.ctx, boardSize, largeText, smallText, pos));
     }
   }
 
