@@ -36,14 +36,14 @@ export class Main implements Scene {
       new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 190), playerColor1),
       new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 320), playerColor2),
     ];
-    const smallText = new Text(this.ctx, '#ffffff', `bold 24px 'Yu Gothic', 'Meiryo', sans-serif`);
-    const largeText = new Text(this.ctx, '#ffffff', `80px 'Yu Gothic', 'Meiryo', sans-serif`);
+    const smallText = new Text(this.ctx, '#ffffff', `bold 24px 'Meiryo', sans-serif`);
+    const largeText = new Text(this.ctx, '#ffffff', `80px 'Meiryo', sans-serif`);
     this.scoreBoards = [
       new ScoreBoard(this.ctx, 'YOU', playerColor1, largeText, smallText, new Vector2(183, 500)),
       new ScoreBoard(this.ctx, 'NPC', playerColor2, largeText, smallText, new Vector2(483, 500)),
     ];
     // エフェクトの初期化
-    this.effectText = new Text(this.ctx, '#ffffff', `bold 60px 'Yu Gothic', 'Meiryo', sans-serif`);
+    this.effectText = new Text(this.ctx, '#ffffff', `bold 60px 'Meiryo', sans-serif`);
     this.effects = [];
     this.states = {
       [GameMain.State.FadeIn]: this.renderFadeIn.bind(this),
