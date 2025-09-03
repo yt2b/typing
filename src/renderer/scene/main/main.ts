@@ -28,22 +28,22 @@ export class Main implements Scene {
     this.width = width;
     this.height = height;
     // テキストの設定
-    this.currentWord = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 48px 'Meiryo', sans-serif`), 120);
-    const inputText = new Text(this.ctx, '#ffffff', `bold 36px 'Yu Gothic', 'Meiryo', sans-serif`);
+    this.currentWord = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 36px 'Meiryo', sans-serif`), 80);
+    const inputText = new Text(this.ctx, '#ffffff', `bold 32px 'Yu Gothic', 'Meiryo', sans-serif`);
     const playerColor1 = '#ff8800a0';
     const playerColor2 = '#32cd32a0';
     this.acceptorTexts = [
-      new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 260), playerColor1),
-      new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 440), playerColor2),
+      new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 190), playerColor1),
+      new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 320), playerColor2),
     ];
-    const smallText = new Text(this.ctx, '#ffffff', `bold 32px 'Yu Gothic', 'Meiryo', sans-serif`);
-    const largeText = new Text(this.ctx, '#ffffff', `100px 'Yu Gothic', 'Meiryo', sans-serif`);
+    const smallText = new Text(this.ctx, '#ffffff', `bold 24px 'Yu Gothic', 'Meiryo', sans-serif`);
+    const largeText = new Text(this.ctx, '#ffffff', `80px 'Yu Gothic', 'Meiryo', sans-serif`);
     this.scoreBoards = [
-      new ScoreBoard(this.ctx, 'YOU', playerColor1, largeText, smallText, new Vector2(228, 660)),
-      new ScoreBoard(this.ctx, 'NPC', playerColor2, largeText, smallText, new Vector2(628, 660)),
+      new ScoreBoard(this.ctx, 'YOU', playerColor1, largeText, smallText, new Vector2(183, 500)),
+      new ScoreBoard(this.ctx, 'NPC', playerColor2, largeText, smallText, new Vector2(483, 500)),
     ];
     // エフェクトの初期化
-    this.effectText = new Text(this.ctx, '#ffffff', `bold 72px 'Yu Gothic', 'Meiryo', sans-serif`);
+    this.effectText = new Text(this.ctx, '#ffffff', `bold 60px 'Yu Gothic', 'Meiryo', sans-serif`);
     this.effects = [];
     this.states = {
       [GameMain.State.FadeIn]: this.renderFadeIn.bind(this),

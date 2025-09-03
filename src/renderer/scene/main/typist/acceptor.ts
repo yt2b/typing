@@ -20,8 +20,8 @@ export class AcceptorText {
    */
   drawRect(text: string) {
     const sizeText = this.inputText.text.getSize(text);
-    const padX = 30;
-    const padY = 40;
+    const padX = 25;
+    const padY = 30;
     const pos = new Vector2((this.inputText.width - sizeText.x) / 2 - padX, this.inputText.pos.y - sizeText.y - padY);
     const size = new Vector2(sizeText.x + padX * 2, sizeText.y + padY * 2);
     new StrokeRect(this.ctx, this.strokeColor, '#444444', pos, size, 12).draw();
