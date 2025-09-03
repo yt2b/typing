@@ -20,7 +20,7 @@ export class AcceptorText {
    */
   drawRect(text: string) {
     const sizeText = this.inputText.text.getSize(text);
-    const padX = 25;
+    const padX = 20;
     const padY = 30;
     const pos = new Vector2((this.inputText.width - sizeText.x) / 2 - padX, this.inputText.pos.y - sizeText.y - padY);
     const size = new Vector2(sizeText.x + padX * 2, sizeText.y + padY * 2);

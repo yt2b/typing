@@ -29,18 +29,18 @@ export class Main implements Scene {
     this.height = height;
     // テキストの設定
     this.currentWord = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 36px 'Meiryo', sans-serif`), 80);
-    const inputText = new Text(this.ctx, '#ffffff', `bold 32px 'Yu Gothic', 'Meiryo', sans-serif`);
-    const playerColor1 = '#ff8800a0';
-    const playerColor2 = '#32cd32a0';
+    const inputText = new Text(this.ctx, '#ffffff', `bold 28px 'Yu Gothic', 'Meiryo', sans-serif`);
+    const playerColor1 = '#ff880060';
+    const playerColor2 = '#32cd3260';
     this.acceptorTexts = [
       new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 190), playerColor1),
       new AcceptorText(this.ctx, new InputText(this.ctx, this.width, inputText, 320), playerColor2),
     ];
     const smallText = new Text(this.ctx, '#ffffff', `bold 24px 'Meiryo', sans-serif`);
-    const largeText = new Text(this.ctx, '#ffffff', `80px 'Meiryo', sans-serif`);
+    const largeText = new Text(this.ctx, '#ffffff', `50px 'Meiryo', sans-serif`);
     this.scoreBoards = [
-      new ScoreBoard(this.ctx, 'YOU', playerColor1, largeText, smallText, new Vector2(183, 500)),
-      new ScoreBoard(this.ctx, 'NPC', playerColor2, largeText, smallText, new Vector2(483, 500)),
+      new ScoreBoard(this.ctx, 'YOU', playerColor1, largeText, smallText, new Vector2(228, 480)),
+      new ScoreBoard(this.ctx, 'NPC', playerColor2, largeText, smallText, new Vector2(488, 480)),
     ];
     // エフェクトの初期化
     this.effectText = new Text(this.ctx, '#ffffff', `bold 60px 'Meiryo', sans-serif`);
