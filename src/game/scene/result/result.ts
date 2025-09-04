@@ -26,7 +26,10 @@ export class Result implements Scene {
     };
   }
 
-  initialize(_?: unknown): void {}
+  initialize(_?: unknown): void {
+    this.state = Result.State.FadeIn;
+    this.count = 0;
+  }
 
   update(key?: string): SceneResult {
     this.count++;
@@ -41,11 +44,18 @@ export class Result implements Scene {
     return { sceneType: SceneType.Result };
   }
 
-  runSelect(_?: string): SceneResult {
+  runSelect(key?: string): SceneResult {
+    if (key == ' ') {
+      this.state = Result.State.FadeOut;
+      this.count = 0;
+    }
     return { sceneType: SceneType.Result };
   }
 
   runFadeOut(_?: string): SceneResult {
+    if (this.count >= Result.FADE_FRAMES) {
+      return { sceneType: SceneType.Title };
+    }
     return { sceneType: SceneType.Result };
   }
 }
