@@ -14,17 +14,15 @@ export class Result implements Scene {
     FadeOut: 2,
   } as const;
   static readonly FADE_FRAMES = 10;
+  states: Record<number, (key?: string) => SceneResult> = {
+    [Result.State.FadeIn]: this.runFadeIn.bind(this),
+    [Result.State.Select]: this.runSelect.bind(this),
+    [Result.State.FadeOut]: this.runFadeOut.bind(this),
+  };
   state: number = Result.State.FadeIn;
   count: number = 0;
-  states: Record<number, (key?: string) => SceneResult>;
 
-  constructor() {
-    this.states = {
-      [Result.State.FadeIn]: this.runFadeIn.bind(this),
-      [Result.State.Select]: this.runSelect.bind(this),
-      [Result.State.FadeOut]: this.runFadeOut.bind(this),
-    };
-  }
+  constructor() {}
 
   initialize(_?: unknown): void {
     this.state = Result.State.FadeIn;

@@ -23,6 +23,12 @@ export class Main implements Scene {
     FadeOut: 3,
   } as const;
   static readonly FADE_FRAMES = 10;
+  states: Record<number, (key?: string) => SceneResult> = {
+    [Main.State.FadeIn]: this.runFadeIn.bind(this),
+    [Main.State.Wait]: this.runWait.bind(this),
+    [Main.State.Typing]: this.runTyping.bind(this),
+    [Main.State.FadeOut]: this.runFadeOut.bind(this),
+  };
   state: number = Main.State.FadeIn;
   count: number = 0;
   timeLimit: number = 0;
@@ -30,18 +36,11 @@ export class Main implements Scene {
   currentTime: number = 0;
   human: Human;
   manager: TypistManager;
-  states: Record<number, (key?: string) => SceneResult>;
 
   constructor(words: Word[]) {
     const factory = new AcceptorFactory(createPatterns());
     this.human = new Human();
     this.manager = new TypistManager(words, factory, [this.human, new Npc(0.5, 100, 2000)]);
-    this.states = {
-      [Main.State.FadeIn]: this.runFadeIn.bind(this),
-      [Main.State.Wait]: this.runWait.bind(this),
-      [Main.State.Typing]: this.runTyping.bind(this),
-      [Main.State.FadeOut]: this.runFadeOut.bind(this),
-    };
   }
 
   initialize(param?: unknown): void {

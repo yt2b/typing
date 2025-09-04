@@ -16,11 +16,15 @@ export class Title implements Scene {
     FadeOut: 2,
   } as const;
   static readonly FADE_FRAMES = 10; // フェードアウトにかけるフレーム数
+  states: Record<number, (key?: string) => SceneResult> = {
+    [Title.State.FadeIn]: this.runFadeIn.bind(this),
+    [Title.State.Select]: this.runSelect.bind(this),
+    [Title.State.FadeOut]: this.runFadeOut.bind(this),
+  };
   difficulties: Difficultiy[];
   idx: number = 0;
   state: number = Title.State.Select;
   count: number = 0;
-  states: Record<number, (key?: string) => SceneResult>;
 
   constructor() {
     this.difficulties = [
@@ -28,11 +32,6 @@ export class Title implements Scene {
       { name: '中級', param: { timeLimit: 45000, accuracy: 0.9, kpm: 450, aveStartTime: 1000 } },
       { name: '上級', param: { timeLimit: 60000, accuracy: 0.95, kpm: 530, aveStartTime: 1000 } },
     ];
-    this.states = {
-      [Title.State.FadeIn]: this.runFadeIn.bind(this),
-      [Title.State.Select]: this.runSelect.bind(this),
-      [Title.State.FadeOut]: this.runFadeOut.bind(this),
-    };
   }
 
   initialize(_?: unknown): void {
