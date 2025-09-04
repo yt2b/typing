@@ -1,5 +1,13 @@
 # typing
 
+## セットアップ
+
+```
+git clone https://github.com/yt2b/typing.git
+cd typing
+npm install
+```
+
 ## テスト
 
 ```
