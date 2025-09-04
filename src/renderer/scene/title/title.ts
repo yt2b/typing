@@ -16,6 +16,11 @@ export class Title implements Scene {
   description: CenterText;
   operation: CenterText;
   boards: DiffBoard[];
+  states: Record<number, (title: GameTitle) => void> = {
+    [GameTitle.State.FadeIn]: this.renderFadeIn.bind(this),
+    [GameTitle.State.Select]: this.renderSelect.bind(this),
+    [GameTitle.State.FadeOut]: this.renderFadeOut.bind(this),
+  };
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
@@ -40,17 +45,27 @@ export class Title implements Scene {
   handle_events(_: Event[]): void {}
 
   render(scene: GameScene): void {
+    const title = scene as GameTitle;
+    this.states[title.state](title);
+  }
+
+  renderFadeIn(title: GameTitle) {
+    this.renderSelect(title);
+    setBrightNess(this.ctx, 1.0 - title.count / GameTitle.FADE_FRAMES);
+  }
+
+  renderSelect(title: GameTitle) {
     this.displayText.draw('VS Typing');
     this.description.draw('表示された文章をNPCよりも速く入力してください');
     this.operation.draw('↑↓:選択  <Space>:決定');
-    const title = scene as GameTitle;
     title.difficulties.forEach((diff, idx) => {
       this.boards[idx].isSelected = title.idx == idx;
       this.boards[idx].render(diff);
     });
-    // フェードアウト
-    if (title.state === GameTitle.State.Fadeout) {
-      setBrightNess(this.ctx, title.count / GameTitle.FADE_FRAMES);
-    }
+  }
+
+  renderFadeOut(title: GameTitle) {
+    this.renderSelect(title);
+    setBrightNess(this.ctx, title.count / GameTitle.FADE_FRAMES);
   }
 }

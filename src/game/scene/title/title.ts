@@ -11,8 +11,9 @@ export interface Difficultiy {
 
 export class Title implements Scene {
   static State = {
-    Select: 0,
-    Fadeout: 1,
+    FadeIn: 0,
+    Select: 1,
+    FadeOut: 2,
   } as const;
   static readonly FADE_FRAMES = 10; // フェードアウトにかけるフレーム数
   difficulties: Difficultiy[];
@@ -23,24 +24,34 @@ export class Title implements Scene {
 
   constructor() {
     this.difficulties = [
-      { name: '初級', param: { timeLimit: 30000, accuracy: 0.8, kpm: 180, aveStartTime: 1500 } },
+      { name: '初級', param: { timeLimit: 1000, accuracy: 0.8, kpm: 180, aveStartTime: 1500 } },
       { name: '中級', param: { timeLimit: 45000, accuracy: 0.9, kpm: 450, aveStartTime: 1000 } },
       { name: '上級', param: { timeLimit: 60000, accuracy: 0.95, kpm: 530, aveStartTime: 1000 } },
     ];
     this.states = {
+      [Title.State.FadeIn]: this.runFadeIn.bind(this),
       [Title.State.Select]: this.runSelect.bind(this),
-      [Title.State.Fadeout]: this.runFadeout.bind(this),
+      [Title.State.FadeOut]: this.runFadeOut.bind(this),
     };
   }
 
   initialize(_?: unknown): void {
     this.idx = 0;
-    this.state = Title.State.Select;
+    this.state = Title.State.FadeIn;
     this.count = 0;
   }
 
   update(key?: string): SceneResult {
+    this.count++;
     return this.states[this.state](key);
+  }
+
+  runFadeIn(_?: string): SceneResult {
+    if (this.count >= Title.FADE_FRAMES) {
+      this.state = Title.State.Select;
+      this.count = 0;
+    }
+    return { sceneType: SceneType.Title };
   }
 
   runSelect(key?: string): SceneResult {
@@ -58,15 +69,14 @@ export class Title implements Scene {
         }
         break;
       case ' ':
-        this.state = Title.State.Fadeout;
+        this.state = Title.State.FadeOut;
         this.count = 0;
         break;
     }
     return { sceneType: SceneType.Title };
   }
 
-  runFadeout(_?: string): SceneResult {
-    this.count++;
+  runFadeOut(_?: string): SceneResult {
     if (this.count >= Title.FADE_FRAMES) {
       const param = this.difficulties[this.idx].param;
       return { sceneType: SceneType.Main, events: [{ type: EventType.Select }], param: param };
