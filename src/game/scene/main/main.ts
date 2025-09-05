@@ -7,6 +7,7 @@ import { createPatterns } from './typing/patterns';
 import { TypistManager } from './typist/typist-manager';
 import { Scene, SceneResult } from '../scene';
 import { SceneType } from '../../game';
+import { Result } from '../result/result';
 
 export interface MainParam {
   timeLimit: number;
@@ -93,11 +94,19 @@ export class Main implements Scene {
   runFadeOut(_?: string): SceneResult {
     if (this.count >= Main.FADE_FRAMES) {
       // 結果画面に遷移する
-      const typist = this.manager.typists[0];
+      let battle = Result.Battle.Draw;
+      const human = this.manager.typists[0];
+      const npc = this.manager.typists[1];
+      if (human.score > npc.score) {
+        battle = Result.Battle.Win;
+      } else if (human.score < npc.score) {
+        battle = Result.Battle.Lose;
+      }
       const statistics = {
-        score: typist.score,
-        countTotalTyping: typist.countTotalTyping,
-        countMissTyping: typist.countMissTyping,
+        battle: battle,
+        score: human.score,
+        countTotalTyping: human.countTotalTyping,
+        countMissTyping: human.countMissTyping,
       };
       return { sceneType: SceneType.Result, events: [], param: statistics };
     }

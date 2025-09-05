@@ -3,22 +3,31 @@ import { Result as GameResult } from '../../../game/scene/result/result';
 import { Scene as GameScene } from '../../../game/scene/scene';
 import { Scene } from '../scene';
 import { setBrightNess } from '../../commons/screen';
+import { CenterText } from '../../commons/text/center-text';
+import { Text } from '../../commons/text/text';
+import { Vector2 } from '../../commons/vector';
 
 export class Result implements Scene {
+  states: Record<number, (main: GameResult) => void> = {
+    [GameResult.State.FadeIn]: this.renderFadeIn.bind(this),
+    [GameResult.State.Select]: this.renderSelect.bind(this),
+    [GameResult.State.FadeOut]: this.renderFadeOut.bind(this),
+  };
   ctx: CanvasRenderingContext2D;
   width: number;
   height: number;
-  states: Record<number, (main: GameResult) => void>;
+  battle: CenterText;
+  statistics: Text;
+  operation: CenterText;
 
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
     this.width = width;
     this.height = height;
-    this.states = {
-      [GameResult.State.FadeIn]: this.renderFadeIn.bind(this),
-      [GameResult.State.Select]: this.renderSelect.bind(this),
-      [GameResult.State.FadeOut]: this.renderFadeOut.bind(this),
-    };
+    this.battle = new CenterText(this.width, new Text(this.ctx, '#000000', `bold 48px 'Meiryo', sans-serif`), 50);
+    const text = new Text(this.ctx, '#000000', `bold 25px 'Meiryo', sans-serif`);
+    this.statistics = new Text(this.ctx, '#000000', `bold 36px 'Meiryo', sans-serif`);
+    this.operation = new CenterText(this.width, text, height - 10);
   }
 
   initialize(): void {}
@@ -35,7 +44,36 @@ export class Result implements Scene {
     setBrightNess(this.ctx, 1.0 - result.count / GameResult.FADE_FRAMES);
   }
 
-  renderSelect(_: GameResult) {}
+  renderSelect(result: GameResult) {
+    this.ctx.fillStyle = '#ffffff';
+    switch (result.statistics?.battle) {
+      case GameResult.Battle.Win:
+        this.battle.draw('You win!！');
+        break;
+      case GameResult.Battle.Lose:
+        this.battle.draw('You lose..');
+        break;
+      case GameResult.Battle.Draw:
+        this.battle.draw('Draw');
+        break;
+    }
+    this.statistics.draw('スコア', new Vector2(160, 150));
+    this.statistics.draw('総打鍵数', new Vector2(160, 210));
+    this.statistics.draw('ミス数', new Vector2(160, 270));
+    this.statistics.draw('正確率', new Vector2(160, 330));
+    const ss = result.statistics;
+    if (ss !== undefined) {
+      this.statistics.draw(`${ss.score}`, new Vector2(460, 150));
+      this.statistics.draw(`${ss.countTotalTyping}`, new Vector2(460, 210));
+      this.statistics.draw(`${ss.countMissTyping}`, new Vector2(460, 270));
+      let accuracy = 100;
+      if (ss.countTotalTyping != 0) {
+        accuracy = ((ss.countTotalTyping - ss.countMissTyping) / ss.countTotalTyping) * 100;
+      }
+      this.statistics.draw(`${accuracy.toFixed(0)}%`, new Vector2(460, 330));
+    }
+    this.operation.draw('<Space>:タイトルに戻る');
+  }
 
   renderFadeOut(result: GameResult) {
     this.renderSelect(result);
