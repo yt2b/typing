@@ -1,3 +1,4 @@
+import { EventType, Event } from '../../event';
 import { SceneType } from '../../game';
 import { Scene, SceneResult } from '../scene';
 
@@ -51,11 +52,13 @@ export class Result implements Scene {
   }
 
   runSelect(key?: string): SceneResult {
+    const events: Event[] = [];
     if (key == ' ') {
       this.state = Result.State.FadeOut;
       this.count = 0;
+      events.push({ type: EventType.Select });
     }
-    return { sceneType: SceneType.Result };
+    return { sceneType: SceneType.Result, events: events };
   }
 
   runFadeOut(_?: string): SceneResult {
