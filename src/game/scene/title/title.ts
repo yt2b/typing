@@ -1,5 +1,5 @@
 import { Key } from '../../../input/input';
-import { EventType } from '../../event';
+import { EventType, Event } from '../../event';
 import { SceneType } from '../../game';
 import { MainParam } from '../main/main';
 import { Scene, SceneResult } from '../scene';
@@ -54,25 +54,29 @@ export class Title implements Scene {
   }
 
   runSelect(key?: string): SceneResult {
+    const events: Event[] = [];
     switch (key) {
       case Key.Up:
         this.idx -= 1;
         if (this.idx < 0) {
           this.idx = this.difficulties.length - 1;
         }
+        events.push({ type: EventType.Select });
         break;
       case Key.Down:
         this.idx += 1;
         if (this.idx >= this.difficulties.length) {
           this.idx = 0;
         }
+        events.push({ type: EventType.Select });
         break;
       case ' ':
         this.state = Title.State.FadeOut;
         this.count = 0;
+        events.push({ type: EventType.Decision });
         break;
     }
-    return { sceneType: SceneType.Title };
+    return { sceneType: SceneType.Title, events: events };
   }
 
   runFadeOut(_?: string): SceneResult {

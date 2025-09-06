@@ -56,7 +56,7 @@ export class Result implements Scene {
     if (key == ' ') {
       this.state = Result.State.FadeOut;
       this.count = 0;
-      events.push({ type: EventType.Select });
+      events.push({ type: EventType.Decision });
     }
     return { sceneType: SceneType.Result, events: events };
   }
