@@ -1,13 +1,11 @@
 import { Node } from './node';
 
 export class NodeSearcher {
-  root: Node;
   current: Node;
   isEnd: boolean;
   history: string[];
 
   constructor(root: Node) {
-    this.root = root;
     this.current = root;
     this.isEnd = false;
     this.history = [];

@@ -5,7 +5,6 @@ describe('NodeSearcher', () => {
   test('Create instance', () => {
     const node = createNode(['ka', 'ca']);
     const searcher = new NodeSearcher(node);
-    expect(searcher.root).toEqual(node);
     expect(searcher.current).toEqual(node);
     expect(searcher.isEnd).toEqual(false);
     expect(searcher.history).toEqual([]);
