@@ -26,52 +26,52 @@ describe('NodeSearcher', () => {
         current: nodeK,
         isEnd: false,
         history: 'k',
-        prediction: 'kya',
+        completion: 'kya',
       },
       {
         contains: true,
         current: nodeI,
         isEnd: false,
         history: 'ki',
-        prediction: 'kilya',
+        completion: 'kilya',
       },
       {
         contains: false,
         current: nodeI,
         isEnd: false,
         history: 'ki',
-        prediction: 'kilya',
+        completion: 'kilya',
       },
       {
         contains: true,
         current: nodeX,
         isEnd: false,
         history: 'kix',
-        prediction: 'kixya',
+        completion: 'kixya',
       },
       {
         contains: true,
         current: nodeY,
         isEnd: false,
         history: 'kixy',
-        prediction: 'kixya',
+        completion: 'kixya',
       },
       {
         contains: true,
         current: nodeA,
         isEnd: true,
         history: 'kixya',
-        prediction: 'kixya',
+        completion: 'kixya',
       },
     ];
     Array.from(inputs).forEach((char, idx) => {
-      const { current, isEnd, history, contains, prediction } = expected[idx];
+      const { current, isEnd, history, contains, completion } = expected[idx];
       expect(searcher.contains(char)).toEqual(contains);
       searcher.step(char);
       expect(searcher.current).toEqual(current);
       expect(searcher.isEnd).toEqual(isEnd);
       expect(searcher.history).toEqual(history.split(''));
-      expect(searcher.getCompletion()).toEqual(prediction);
+      expect(searcher.getCompletion()).toEqual(completion);
     });
   });
 });

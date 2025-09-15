@@ -19,7 +19,7 @@ describe('createNode', () => {
     expect(node.find('r')).toEqual(undefined);
   });
 
-  test('Return prediction string', () => {
+  test('Return completion string', () => {
     const node = createNode(['ka', 'ca']);
     expect(node.getCompletion()).toEqual('ka');
   });

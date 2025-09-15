@@ -160,7 +160,7 @@ export class Acceptor {
     // 現在入力中の文字
     const current = this.isAcceptableN1(this.idx) ? 'n' : this.searcher.getCompletion();
     // 未入力文字の予測
-    const prediction = this.charas
+    const completion = this.charas
       .slice(this.idx + 1)
       .map((chara, i) => {
         // 「ん」が1回のnで入力できるなら'n'を返す
@@ -169,8 +169,8 @@ export class Acceptor {
         }
         return chara.node.getCompletion();
       })
-      .reduce((buf, prediction) => buf + prediction, '');
-    return history + current + prediction;
+      .reduce((buf, completion) => buf + completion, '');
+    return history + current + completion;
   }
 
   /**

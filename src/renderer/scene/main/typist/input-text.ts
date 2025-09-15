@@ -21,15 +21,15 @@ export class InputText {
    */
   draw(acceptor: Acceptor) {
     const history = acceptor.history;
-    const prediction = acceptor.getCompletion();
-    this.pos.x = (this.width - this.text.getSize(prediction).x) / 2;
+    const completion = acceptor.getCompletion();
+    this.pos.x = (this.width - this.text.getSize(completion).x) / 2;
     // 入力済みの文字は半透明で表示
     this.ctx.globalAlpha = 0.15;
     this.text.draw(history, this.pos);
     // 未入力の文字は透過させずに表示
     this.ctx.globalAlpha = 1.0;
-    const subPrediction = prediction.substring(history.length);
+    const subCompletion = completion.substring(history.length);
     this.pos.x += this.text.getSize(history).x;
-    this.text.draw(subPrediction, this.pos);
+    this.text.draw(subCompletion, this.pos);
   }
 }

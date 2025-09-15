@@ -35,7 +35,7 @@ export class NodeSearcher {
   getCompletion(): string {
     const history = this.history.join('');
     const children = this.current.children;
-    const prediction = children === undefined ? '' : children[0].getCompletion();
-    return history + prediction;
+    const completion = children === undefined ? '' : children[0].getCompletion();
+    return history + completion;
   }
 }

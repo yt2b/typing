@@ -23,7 +23,7 @@ describe('Acceptor', () => {
     ['いっきょ', 'ixts', 'ikkyo', 'ixtsukyo'],
     ['あんち', 'anc', 'anti', 'anchi'],
     ['たんご', 'tann', 'tango', 'tanngo'],
-  ])('Change prediction (text:%s, input:%s,  %s → %s)', (text, input, before_pred, after_pred) => {
+  ])('Change completion (text:%s, input:%s,  %s → %s)', (text, input, before_pred, after_pred) => {
     const acceptor = factory.create(text);
     expect(acceptor.getCompletion()).toEqual(before_pred);
     Array.from(input).forEach((ch) => acceptor.accept(ch));
