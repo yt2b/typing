@@ -12,7 +12,7 @@ export class Typist {
   constructor(player: Player, acceptor: Acceptor) {
     this.player = player;
     this.acceptor = acceptor;
-    this.player.setText(acceptor.getPrediction());
+    this.player.setText(acceptor.getCompletion());
   }
 
   /**
@@ -21,7 +21,7 @@ export class Typist {
    */
   setAcceptor(acceptor: Acceptor) {
     this.acceptor = acceptor;
-    this.player.setText(acceptor.getPrediction());
+    this.player.setText(acceptor.getCompletion());
   }
 
   /**

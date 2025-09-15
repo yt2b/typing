@@ -154,11 +154,11 @@ export class Acceptor {
    * 入力文字全体の予測を返す
    * @returns
    */
-  getPrediction(): string {
+  getCompletion(): string {
     // 入力履歴
     const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
-    const current = this.isAcceptableN1(this.idx) ? 'n' : this.searcher.getPrediction();
+    const current = this.isAcceptableN1(this.idx) ? 'n' : this.searcher.getCompletion();
     // 未入力文字の予測
     const prediction = this.charas
       .slice(this.idx + 1)
@@ -167,7 +167,7 @@ export class Acceptor {
         if (this.isAcceptableN1(this.idx + 1 + i)) {
           return 'n';
         }
-        return chara.node.getPrediction();
+        return chara.node.getCompletion();
       })
       .reduce((buf, prediction) => buf + prediction, '');
     return history + current + prediction;

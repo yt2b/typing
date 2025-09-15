@@ -21,6 +21,6 @@ describe('createNode', () => {
 
   test('Return prediction string', () => {
     const node = createNode(['ka', 'ca']);
-    expect(node.getPrediction()).toEqual('ka');
+    expect(node.getCompletion()).toEqual('ka');
   });
 });

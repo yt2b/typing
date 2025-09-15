@@ -57,8 +57,8 @@ export class Node {
    * 予測文字列を返す
    * @returns 予測文字列
    */
-  getPrediction(): string {
+  getCompletion(): string {
     const children = this.children;
-    return this.char + (children === undefined ? '' : children[0].getPrediction());
+    return this.char + (children === undefined ? '' : children[0].getCompletion());
   }
 }

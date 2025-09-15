@@ -8,7 +8,7 @@ describe('NodeSearcher', () => {
     expect(searcher.current).toEqual(node);
     expect(searcher.isEnd).toEqual(false);
     expect(searcher.history).toEqual([]);
-    expect(searcher.getPrediction()).toEqual('ka');
+    expect(searcher.getCompletion()).toEqual('ka');
   });
 
   test('Traverse child node', () => {
@@ -71,7 +71,7 @@ describe('NodeSearcher', () => {
       expect(searcher.current).toEqual(current);
       expect(searcher.isEnd).toEqual(isEnd);
       expect(searcher.history).toEqual(history.split(''));
-      expect(searcher.getPrediction()).toEqual(prediction);
+      expect(searcher.getCompletion()).toEqual(prediction);
     });
   });
 });

@@ -32,10 +32,10 @@ export class NodeSearcher {
    * 入力履歴+予測文字列を返す
    * @returns
    */
-  getPrediction(): string {
+  getCompletion(): string {
     const history = this.history.join('');
     const children = this.current.children;
-    const prediction = children === undefined ? '' : children[0].getPrediction();
+    const prediction = children === undefined ? '' : children[0].getCompletion();
     return history + prediction;
   }
 }
