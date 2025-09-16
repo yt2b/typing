@@ -183,7 +183,7 @@ export class Acceptor {
     const nextIdx = idx + 1;
     if (chara.value == 'ん' && nextIdx < this.charas.length) {
       const nextChara = this.charas[nextIdx];
-      return !/[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value);
+      return !/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value);
     }
     return false;
   }
