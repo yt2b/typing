@@ -1,6 +1,6 @@
 import { EventType } from '../../../event';
 import { Player } from '../player/player';
-import { Acceptor } from '../typing/acceptor';
+import { Acceptor, Result } from '../typing/acceptor';
 
 export class Typist {
   player: Player;
@@ -35,9 +35,8 @@ export class Typist {
       return undefined;
     }
     this.countTotalTyping++;
-    if (this.acceptor.acceptable(char)) {
+    if (this.acceptor.accept(char) == Result.Accept) {
       // 入力成功
-      this.acceptor.accept(char);
       return EventType.Typing;
     } else {
       // 入力ミス

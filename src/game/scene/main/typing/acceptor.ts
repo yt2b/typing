@@ -1,6 +1,11 @@
 import { Node } from './node';
 import { NodeSearcher } from './node-searcher';
 
+export enum Result {
+  Accept,
+  Reject,
+}
+
 export class Acceptor {
   idx: number = 0;
   count: number = 0;
@@ -19,53 +24,42 @@ export class Acceptor {
   }
 
   /**
-   * 入力文字が受け入れ可能かどうかを判定する
-   * @param char 入力文字
-   * @returns 受け入れ可能な場合はtrue、そうでない場合はfalse
-   */
-  acceptable(char: string): boolean {
-    const chara = this.charas[this.idx];
-    const handler = this.specialRuleHandlers.find((handler) => handler.applicable(chara));
-    if (handler === undefined) {
-      return this.searcher.contains(char);
-    } else {
-      return handler.acceptable(this, char);
-    }
-  }
-
-  /**
    * 入力文字を受け入れる
    * @param char 入力文字
+   * @return 入力結果
    */
-  accept(char: string) {
+  accept(char: string): Result {
     const chara = this.charas[this.idx];
     const handler = this.specialRuleHandlers.find((handler) => handler.applicable(chara));
     if (handler === undefined) {
-      this.step(char);
+      return this.step(char);
     } else {
-      handler.accept(this, char);
+      return handler.accept(this, char);
     }
   }
 
   /**
    * 入力文字を1文字進める
    * @param char 入力文字
+   * @return 入力結果
    */
-  step(char: string) {
-    if (this.searcher.contains(char)) {
-      this.searcher.step(char);
-      this.count += 1;
-      this.history += char;
+  step(char: string): Result {
+    if (!this.searcher.contains(char)) {
+      return Result.Reject;
     }
+    this.searcher.step(char);
+    this.count += 1;
+    this.history += char;
     if (this.searcher.isEnd) {
-      if (this.charas[this.idx + 1] !== undefined) {
-        // 次の文字に進む
-        this.next();
-      } else {
+      if (this.charas[this.idx + 1] === undefined) {
         // 全ての文字を入力した
         this.end = true;
+      } else {
+        // 次の文字に進む
+        this.next();
       }
     }
+    return Result.Accept;
   }
 
   /**
@@ -138,18 +132,12 @@ interface SpecialRuleHandler {
    */
   applicable(chara: Chara): boolean;
   /**
-   * 入力文字が受け入れ可能かどうかを判定する
-   * @param acceptor 入力を受け入れるオブジェクト
-   * @param char 入力文字
-   * @returns 受け入れ可能な場合はtrue、そうでない場合はfalse
-   */
-  acceptable(acceptor: Acceptor, char: string): boolean;
-  /**
    * 入力文字を受け入れる
    * @param acceptor 入力を受け入れるオブジェクト
    * @param char 入力文字
+   * @return 入力結果
    */
-  accept(acceptor: Acceptor, char: string): void;
+  accept(acceptor: Acceptor, char: string): Result;
 }
 
 /**
@@ -160,13 +148,9 @@ class SmallTsuRuleHandler implements SpecialRuleHandler {
     return chara.value == 'っ';
   }
 
-  acceptable(acceptor: Acceptor, char: string): boolean {
-    return acceptor.searcher.contains(char);
-  }
-
-  accept(acceptor: Acceptor, char: string): void {
+  accept(acceptor: Acceptor, char: string): Result {
     const prevIdx = acceptor.idx;
-    acceptor.step(char);
+    const result = acceptor.step(char);
     // 次の文字に進んだ場合
     if (acceptor.idx > prevIdx) {
       // 次の文字の予測を変更する
@@ -181,6 +165,7 @@ class SmallTsuRuleHandler implements SpecialRuleHandler {
         chara.node.children.unshift(...child);
       }
     }
+    return result;
   }
 }
 
@@ -188,42 +173,35 @@ class SmallTsuRuleHandler implements SpecialRuleHandler {
  * 「ん」のルールを扱うクラス
  */
 class NNRuleHandler implements SpecialRuleHandler {
-  acceptN1: boolean = false;
+  acceptable: boolean = false;
 
   applicable(chara: Chara): boolean {
     return chara.value == 'ん';
   }
 
-  acceptable(acceptor: Acceptor, char: string): boolean {
-    // 「ん」を1回のnで入力できるかの判定処理
-    if (char != 'n' && this.acceptN1) {
-      // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
-      const consonants = acceptor.charas[acceptor.idx + 1].getConsonants();
-      return consonants.find((c) => c == char) !== undefined;
-    }
-    return acceptor.searcher.contains(char);
-  }
-
-  accept(acceptor: Acceptor, char: string): void {
-    if (char != 'n' && this.acceptN1) {
+  accept(acceptor: Acceptor, char: string): Result {
+    if (char != 'n' && this.acceptable) {
       // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
       const consonants = acceptor.charas[acceptor.idx + 1].getConsonants();
       if (consonants.find((c) => c == char)) {
-        this.acceptN1 = false;
+        this.acceptable = false;
         acceptor.next();
       }
     }
-    acceptor.step(char);
-    // acceptN1フラグが立つのは以下の条件を全て満たす場合
-    // 1. 現在の文字が「ん」であり
-    // 2. 現在「n」が1回だけ入力されている
-    // 3. 次に入力する文字が存在する
-    // 4. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
-    const history = acceptor.searcher.history;
-    const validateHistory = history.length == 1 && history[0] == 'n';
-    const idx = acceptor.idx;
-    const validateNextChar = this.validateN1(acceptor.charas[idx], acceptor.charas[idx + 1]);
-    this.acceptN1 = validateHistory && validateNextChar;
+    const result = acceptor.step(char);
+    if (result == Result.Accept) {
+      // acceptableフラグが立つのは以下の条件を全て満たす場合
+      // 1. 現在の文字が「ん」であり
+      // 2. 現在「n」が1回だけ入力されている
+      // 3. 次に入力する文字が存在する
+      // 4. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
+      const history = acceptor.searcher.history;
+      const validateHistory = history.length == 1 && history[0] == 'n';
+      const idx = acceptor.idx;
+      const validateNextChar = this.validateN1(acceptor.charas[idx], acceptor.charas[idx + 1]);
+      this.acceptable = validateHistory && validateNextChar;
+    }
+    return result;
   }
 
   /**

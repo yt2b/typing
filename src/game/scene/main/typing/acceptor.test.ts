@@ -1,6 +1,6 @@
 import { createNode } from './node';
 import { createPatterns } from './patterns';
-import { Chara } from './acceptor';
+import { Chara, Result } from './acceptor';
 import { AcceptorFactory } from './acceptor-factory';
 
 const patterns = createPatterns();
@@ -42,8 +42,7 @@ describe('Acceptor', () => {
     inputs.forEach((input) => {
       const acceptor = factory.create(text);
       Array.from(input).forEach((char) => {
-        expect(acceptor.acceptable(char)).toEqual(true);
-        acceptor.accept(char);
+        expect(acceptor.accept(char)).toEqual(Result.Accept);
       });
       expect(acceptor.end).toEqual(true);
     });
