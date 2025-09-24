@@ -8,7 +8,6 @@ export enum Result {
 
 export class Acceptor {
   idx: number = 0;
-  count: number = 0;
   history: string = '';
   end: boolean = false;
   charas: Chara[];
@@ -46,8 +45,6 @@ export class Acceptor {
       return Result.Reject;
     }
     this.searcher.step(char);
-    this.count += 1;
-    this.history += char;
     if (this.searcher.isEnd) {
       if (this.charas[this.idx + 1] === undefined) {
         // 全ての文字を入力した
@@ -65,7 +62,7 @@ export class Acceptor {
    */
   next() {
     this.idx += 1;
-    this.count = 0;
+    this.history += this.searcher.history.join('');
     this.searcher = new NodeSearcher(this.charas[this.idx].node);
   }
 
@@ -76,8 +73,6 @@ export class Acceptor {
   getCompletion(): string {
     const nnRuleHandler = this.specialRuleHandlers['ん'] as NNRuleHandler;
     const smallTsuRuleHandler = this.specialRuleHandlers['っ'] as SmallTsuRuleHandler;
-    // 入力履歴
-    const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
     const current = nnRuleHandler.validate(this.charas[this.idx], this.charas[this.idx + 1])
       ? nnRuleHandler.getCompletion(this.searcher)
@@ -96,7 +91,7 @@ export class Acceptor {
         }
       })
       .reduce((buf, completion) => buf + completion, '');
-    return history + current + completion;
+    return this.history + current + completion;
   }
 }
 
