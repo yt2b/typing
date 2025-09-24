@@ -13,14 +13,12 @@ export class Acceptor {
   end: boolean = false;
   charas: Chara[];
   searcher: NodeSearcher;
-  nnRuleHandler: NNRuleHandler;
-  specialRuleHandlers: SpecialRuleHandler[];
+  specialRuleHandlers: Record<string, SpecialRuleHandler>;
 
   constructor(charas: Chara[]) {
     this.charas = charas;
     this.searcher = new NodeSearcher(this.charas[0].node);
-    this.nnRuleHandler = new NNRuleHandler();
-    this.specialRuleHandlers = [new SmallTsuRuleHandler(), this.nnRuleHandler];
+    this.specialRuleHandlers = { ん: new NNRuleHandler(), っ: new SmallTsuRuleHandler() };
   }
 
   /**
@@ -30,7 +28,7 @@ export class Acceptor {
    */
   accept(char: string): Result {
     const chara = this.charas[this.idx];
-    const handler = this.specialRuleHandlers.find((handler) => handler.applicable(chara));
+    const handler = this.specialRuleHandlers[chara.value];
     if (handler === undefined) {
       return this.step(char);
     } else {
@@ -76,22 +74,26 @@ export class Acceptor {
    * @returns
    */
   getCompletion(): string {
+    const nnRuleHandler = this.specialRuleHandlers['ん'] as NNRuleHandler;
+    const smallTsuRuleHandler = this.specialRuleHandlers['っ'] as SmallTsuRuleHandler;
     // 入力履歴
     const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
-    const current = this.nnRuleHandler.validateN1(this.charas[this.idx], this.charas[this.idx + 1])
-      ? this.nnRuleHandler.getCompletion(this.searcher)
+    const current = nnRuleHandler.validate(this.charas[this.idx], this.charas[this.idx + 1])
+      ? nnRuleHandler.getCompletion(this.searcher)
       : this.searcher.getCompletion();
     // 未入力文字の予測
     const completion = this.charas
       .slice(this.idx + 1)
       .map((chara, i) => {
-        // 「ん」が1回のnで入力できるなら'n'を返す
-        const idx = this.idx + 1 + i;
-        if (this.nnRuleHandler.validateN1(this.charas[idx], this.charas[idx + 1])) {
-          return 'n';
+        switch (chara.value) {
+          case 'ん':
+            return nnRuleHandler.getCompletion(this.searcher);
+          case 'っ':
+            return smallTsuRuleHandler.getCompletion(this.searcher, this.charas[this.idx + 2 + i]);
+          default:
+            return chara.node.getCompletion();
         }
-        return chara.node.getCompletion();
       })
       .reduce((buf, completion) => buf + completion, '');
     return history + current + completion;
@@ -141,35 +143,6 @@ interface SpecialRuleHandler {
 }
 
 /**
- * 「っ」のルールを扱うクラス
- */
-class SmallTsuRuleHandler implements SpecialRuleHandler {
-  applicable(chara: Chara): boolean {
-    return chara.value == 'っ';
-  }
-
-  accept(acceptor: Acceptor, char: string): Result {
-    const prevIdx = acceptor.idx;
-    const result = acceptor.step(char);
-    // 次の文字に進んだ場合
-    if (acceptor.idx > prevIdx) {
-      // 次の文字の予測を変更する
-      const chara = acceptor.charas[acceptor.idx];
-      // 次の文字の子音を取得する
-      const consonants = chara.getConsonants();
-      const i = consonants.findIndex((consonant) => consonant == char);
-      // 子音が存在し、かつ子音が最初の子音でない場合
-      if (i > 0 && chara.node.children !== undefined) {
-        // ノードの順番を変更する
-        const child = chara.node.children.splice(i, 1);
-        chara.node.children.unshift(...child);
-      }
-    }
-    return result;
-  }
-}
-
-/**
  * 「ん」のルールを扱うクラス
  */
 class NNRuleHandler implements SpecialRuleHandler {
@@ -198,7 +171,7 @@ class NNRuleHandler implements SpecialRuleHandler {
       const history = acceptor.searcher.history;
       const validateHistory = history.length == 1 && history[0] == 'n';
       const idx = acceptor.idx;
-      const validateNextChar = this.validateN1(acceptor.charas[idx], acceptor.charas[idx + 1]);
+      const validateNextChar = this.validate(acceptor.charas[idx], acceptor.charas[idx + 1]);
       this.acceptable = validateHistory && validateNextChar;
     }
     return result;
@@ -210,9 +183,9 @@ class NNRuleHandler implements SpecialRuleHandler {
    * @param nextChara charaの次に来る文字
    * @returns
    */
-  validateN1(chara: Chara, nextChara: Chara | undefined): boolean {
+  validate(chara: Chara, nextChara: Chara | undefined): boolean {
     if (chara.value == 'ん' && nextChara !== undefined) {
-      return !/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value);
+      return !/[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value);
     }
     return false;
   }
@@ -226,6 +199,63 @@ class NNRuleHandler implements SpecialRuleHandler {
     const history = searcher.history;
     if (history.length == 0 || (history.length == 1 && history[0] == 'n')) {
       return 'n';
+    }
+    return searcher.getCompletion();
+  }
+}
+
+/**
+ * 「っ」のルールを扱うクラス
+ */
+class SmallTsuRuleHandler implements SpecialRuleHandler {
+  applicable(chara: Chara): boolean {
+    return chara.value == 'っ';
+  }
+
+  accept(acceptor: Acceptor, char: string): Result {
+    const nextChara = acceptor.charas[acceptor.idx + 1];
+    if (nextChara === undefined) {
+      return acceptor.step(char);
+    }
+    const consonants = nextChara.getConsonants();
+    // 「っ」を次の文字の子音で入力可能かの判定
+    if (acceptor.searcher.history.length == 0 && char != 'n' && consonants.find((c) => c == char)) {
+      acceptor.history += char;
+      acceptor.next();
+      // 次の文字の予測を変更する
+      const chara = acceptor.charas[acceptor.idx];
+      const consonants = chara.getConsonants();
+      const i = consonants.findIndex((consonant) => consonant == char);
+      if (i > 0 && chara.node.children !== undefined) {
+        // ノードの順番を変更する
+        const child = chara.node.children.splice(i, 1);
+        chara.node.children.unshift(...child);
+      }
+      return Result.Accept;
+    } else {
+      return acceptor.step(char);
+    }
+  }
+
+  validate(chara: Chara, nextChara: Chara | undefined): boolean {
+    if (chara.value == 'っ' && nextChara !== undefined) {
+      return !/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value);
+    }
+    return false;
+  }
+
+  /**
+   * 「っ」の予測文字列を返す
+   * @param searcher NodeSearcher
+   * @returns
+   */
+  getCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
+    if (nextChara === undefined) {
+      return searcher.getCompletion();
+    }
+    if (!/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+      const consonants = nextChara.getConsonants();
+      return consonants[0];
     }
     return searcher.getCompletion();
   }

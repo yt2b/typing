@@ -9,7 +9,7 @@ describe('AcceptorFactory', () => {
     const factory = new AcceptorFactory(patterns);
     const charas = [
       new Chara('きゃ', createNode(patterns['きゃ'])),
-      new Chara('っ', createNode(['t', 'c'].concat(patterns['っ']))),
+      new Chara('っ', createNode(patterns['っ'])),
       new Chara('ち', createNode(patterns['ち'])),
     ];
     const actual = factory.create('きゃっち');

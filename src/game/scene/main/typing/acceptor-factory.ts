@@ -16,16 +16,9 @@ export class AcceptorFactory {
   create(text: string): Acceptor {
     const splitText = this.split(text);
     const charas: Chara[] = [];
-    splitText.forEach((char, idx) => {
-      if (char == 'っ' && idx < splitText.length - 1) {
-        // 「っ」を次の文字の子音で入力可能にする
-        const consonants = this.getConsonants(splitText[idx + 1]);
-        const node = createNode(consonants.concat(this.patterns[char]));
-        charas.push(new Chara(char, node));
-      } else {
-        const node = createNode(this.patterns[char]);
-        charas.push(new Chara(char, node));
-      }
+    splitText.forEach((char) => {
+      const node = createNode(this.patterns[char]);
+      charas.push(new Chara(char, node));
     });
     return new Acceptor(charas);
   }
