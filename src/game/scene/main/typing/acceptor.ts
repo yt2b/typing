@@ -72,22 +72,19 @@ export class Acceptor {
    */
   getCompletion(): string {
     const nnRuleHandler = this.specialRuleHandlers['ん'] as NNRuleHandler;
-    const smallTsuRuleHandler = this.specialRuleHandlers['っ'] as SmallTsuRuleHandler;
     // 現在入力中の文字
     const current = nnRuleHandler.validate(this.charas[this.idx], this.charas[this.idx + 1])
-      ? nnRuleHandler.getCompletion(this.searcher)
+      ? nnRuleHandler.getCurrentCompletion(this.searcher)
       : this.searcher.getCompletion();
     // 未入力文字の予測
     const completion = this.charas
       .slice(this.idx + 1)
       .map((chara, i) => {
-        switch (chara.value) {
-          case 'ん':
-            return nnRuleHandler.getCompletion(this.searcher);
-          case 'っ':
-            return smallTsuRuleHandler.getCompletion(this.searcher, this.charas[this.idx + 2 + i]);
-          default:
-            return chara.node.getCompletion();
+        const handler = this.specialRuleHandlers[chara.value];
+        if (handler === undefined) {
+          return chara.node.getCompletion();
+        } else {
+          return handler.getCompletion(chara, this.charas[this.idx + i + 2]);
         }
       })
       .reduce((buf, completion) => buf + completion, '');
@@ -130,6 +127,12 @@ interface SpecialRuleHandler {
    * @return 入力結果
    */
   accept(acceptor: Acceptor, char: string): Result;
+  /**
+   * 予測文字列を返す
+   * @param chara 文字
+   * @param nextChara charaに次に来る文字
+   */
+  getCompletion(chara: Chara, nextChara: Chara): string;
 }
 
 /**
@@ -163,6 +166,13 @@ class NNRuleHandler implements SpecialRuleHandler {
     return result;
   }
 
+  getCompletion(chara: Chara, nextChara: Chara): string {
+    if (nextChara === undefined || !this.validate(chara, nextChara)) {
+      return chara.node.getCompletion();
+    }
+    return 'n';
+  }
+
   /**
    * 指定した文字が1回のnで入力できるかの判定処理
    * @param chara 現在の文字
@@ -181,7 +191,7 @@ class NNRuleHandler implements SpecialRuleHandler {
    * @param searcher NodeSearcher
    * @returns
    */
-  getCompletion(searcher: NodeSearcher): string {
+  getCurrentCompletion(searcher: NodeSearcher): string {
     const history = searcher.history;
     if (history.length == 0 || (history.length == 1 && history[0] == 'n')) {
       return 'n';
@@ -219,26 +229,11 @@ class SmallTsuRuleHandler implements SpecialRuleHandler {
     }
   }
 
-  validate(chara: Chara, nextChara: Chara | undefined): boolean {
-    if (chara.value == 'っ' && nextChara !== undefined) {
-      return !/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value);
+  getCompletion(chara: Chara, nextChara: Chara | undefined): string {
+    if (nextChara === undefined || /[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+      return chara.node.getCompletion();
     }
-    return false;
-  }
-
-  /**
-   * 「っ」の予測文字列を返す
-   * @param searcher NodeSearcher
-   * @returns
-   */
-  getCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
-    if (nextChara === undefined) {
-      return searcher.getCompletion();
-    }
-    if (!/[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
-      const consonants = nextChara.getConsonants();
-      return consonants[0];
-    }
-    return searcher.getCompletion();
+    const consonants = nextChara.getConsonants();
+    return consonants[0];
   }
 }
