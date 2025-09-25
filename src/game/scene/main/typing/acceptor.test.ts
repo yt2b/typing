@@ -22,8 +22,10 @@ describe('Acceptor', () => {
     ['ばっと', 'bal', 'batto', 'baltuto'],
     ['いっきょ', 'ixts', 'ikkyo', 'ixtsukyo'],
     ['あんち', 'anc', 'anti', 'anchi'],
+    ['ばんく', 'ban', 'banku', 'banku'],
     ['たんご', 'tann', 'tango', 'tanngo'],
-  ])('Change completion (text:%s, input:%s,  %s → %s)', (text, input, before_pred, after_pred) => {
+    ['ばん', 'bax', 'bann', 'baxn'],
+  ])('completion (text:%s, input:%s,  %s → %s)', (text, input, before_pred, after_pred) => {
     const acceptor = factory.create(text);
     expect(acceptor.getCompletion()).toEqual(before_pred);
     Array.from(input).forEach((ch) => acceptor.accept(ch));
