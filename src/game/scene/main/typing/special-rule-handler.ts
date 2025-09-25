@@ -18,6 +18,12 @@ export interface SpecialRuleHandler {
    * @param nextChara charaに次に来る文字
    */
   getCompletion(chara: Chara, nextChara: Chara): string;
+  /**
+   * 現在の予測文字列を返す
+   * @param searcher 現在入力中の文字のNodeSearcher
+   * @param nextChara 次に来る文字
+   */
+  getCurrentCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string;
 }
 
 /**
@@ -76,7 +82,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
    * @param searcher NodeSearcher
    * @returns
    */
-  getCurrentCompletion(searcher: NodeSearcher): string {
+  getCurrentCompletion(searcher: NodeSearcher, _: Chara | undefined): string {
     const history = searcher.history;
     if (history.length == 0 || (history.length == 1 && history[0] == 'n')) {
       return 'n';
@@ -120,5 +126,16 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
     }
     const consonants = nextChara.getConsonants();
     return consonants[0];
+  }
+
+  getCurrentCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
+    if (nextChara === undefined || /[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+      return searcher.getCompletion();
+    }
+    if (searcher.history.length == 0) {
+      const consonants = nextChara.getConsonants();
+      return consonants[0];
+    }
+    return searcher.getCompletion();
   }
 }

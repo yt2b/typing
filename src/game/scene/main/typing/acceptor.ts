@@ -75,13 +75,14 @@ export class Acceptor {
    * @returns
    */
   getCompletion(): string {
-    const nnRuleHandler = this.specialRuleHandlers['ん'] as NNRuleHandler;
     // 入力履歴
     const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
-    const current = nnRuleHandler.validate(this.charas[this.idx], this.charas[this.idx + 1])
-      ? nnRuleHandler.getCurrentCompletion(this.searcher)
-      : this.searcher.getCompletion();
+    const handler = this.specialRuleHandlers[this.charas[this.idx].value];
+    const current =
+      handler === undefined
+        ? this.searcher.getCompletion()
+        : handler.getCurrentCompletion(this.searcher, this.charas[this.idx + 1]);
     // 未入力文字の予測
     const completion = this.charas
       .slice(this.idx + 1)
