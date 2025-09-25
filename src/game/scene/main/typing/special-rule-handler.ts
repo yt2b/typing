@@ -64,6 +64,16 @@ export class NNRuleHandler implements SpecialRuleHandler {
     return 'n';
   }
 
+  getCurrentCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
+    if (nextChara === undefined || /[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+      return searcher.getCompletion();
+    }
+    if (searcher.history.length == 0 || (searcher.history.length == 1 && searcher.history[0] == 'n')) {
+      return 'n';
+    }
+    return searcher.getCompletion();
+  }
+
   /**
    * 指定した文字が1回のnで入力できるかの判定処理
    * @param chara 現在の文字
@@ -75,19 +85,6 @@ export class NNRuleHandler implements SpecialRuleHandler {
       return !/[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value);
     }
     return false;
-  }
-
-  /**
-   * 「ん」の予測文字列を返す
-   * @param searcher NodeSearcher
-   * @returns
-   */
-  getCurrentCompletion(searcher: NodeSearcher, _: Chara | undefined): string {
-    const history = searcher.history;
-    if (history.length == 0 || (history.length == 1 && history[0] == 'n')) {
-      return 'n';
-    }
-    return searcher.getCompletion();
   }
 }
 
@@ -124,8 +121,7 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
     if (nextChara === undefined || /[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
       return chara.node.getCompletion();
     }
-    const consonants = nextChara.getConsonants();
-    return consonants[0];
+    return nextChara.getConsonants()[0];
   }
 
   getCurrentCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
@@ -133,8 +129,7 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
       return searcher.getCompletion();
     }
     if (searcher.history.length == 0) {
-      const consonants = nextChara.getConsonants();
-      return consonants[0];
+      return nextChara.getConsonants()[0];
     }
     return searcher.getCompletion();
   }
