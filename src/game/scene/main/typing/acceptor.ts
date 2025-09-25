@@ -124,11 +124,6 @@ export class Chara {
  */
 interface SpecialRuleHandler {
   /**
-   * 現在の文字に適用可能なルールかを判定する
-   * @param chara 現在の文字
-   */
-  applicable(chara: Chara): boolean;
-  /**
    * 入力文字を受け入れる
    * @param acceptor 入力を受け入れるオブジェクト
    * @param char 入力文字
@@ -142,10 +137,6 @@ interface SpecialRuleHandler {
  */
 class NNRuleHandler implements SpecialRuleHandler {
   acceptable: boolean = false;
-
-  applicable(chara: Chara): boolean {
-    return chara.value == 'ん';
-  }
 
   accept(acceptor: Acceptor, char: string): Result {
     if (char != 'n' && this.acceptable) {
@@ -203,10 +194,6 @@ class NNRuleHandler implements SpecialRuleHandler {
  * 「っ」のルールを扱うクラス
  */
 class SmallTsuRuleHandler implements SpecialRuleHandler {
-  applicable(chara: Chara): boolean {
-    return chara.value == 'っ';
-  }
-
   accept(acceptor: Acceptor, char: string): Result {
     const nextChara = acceptor.charas[acceptor.idx + 1];
     if (nextChara === undefined) {
