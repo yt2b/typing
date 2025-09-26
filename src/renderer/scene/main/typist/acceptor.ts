@@ -1,5 +1,5 @@
 import { Vector2 } from '../../../commons/vector';
-import { Acceptor } from '../../../../game/scene/main/typing/acceptor';
+import { Acceptor } from '../../../../game/scene/main/typing/acceptor/acceptor';
 import { StrokeRect } from '../../../commons/rect/stroke-rect';
 import { InputText } from './input-text';
 

@@ -1,6 +1,6 @@
 import { EventType } from '../../../event';
 import { Player } from '../player/player';
-import { Acceptor, Result } from '../typing/acceptor';
+import { Acceptor, Result } from '../typing/acceptor/acceptor';
 
 export class Typist {
   player: Player;

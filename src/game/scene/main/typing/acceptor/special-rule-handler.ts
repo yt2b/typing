@@ -1,5 +1,5 @@
 import { Acceptor, Chara, Result } from './acceptor';
-import { NodeSearcher } from './node-searcher';
+import { NodeSearcher } from '../node-searcher';
 
 /**
  * 特殊な平仮名のルールを扱うインターフェース

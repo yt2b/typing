@@ -2,7 +2,7 @@ import { Word } from '../../../word/word';
 import { EventType } from '../../event';
 import { Human } from './player/human';
 import { Npc } from './player/npc';
-import { AcceptorFactory } from './typing/acceptor-factory';
+import { AcceptorFactory } from './typing/acceptor/acceptor-factory';
 import { createPatterns } from './typing/patterns';
 import { TypistManager } from './typist/typist-manager';
 import { Scene, SceneResult } from '../scene';

@@ -1,6 +1,6 @@
 import { Chara } from './acceptor';
-import { createNode } from './node';
-import { createPatterns } from './patterns';
+import { createNode } from '../node';
+import { createPatterns } from '../patterns';
 import { NNRuleHandler, SmallTsuRuleHandler } from './special-rule-handler';
 
 const patterns = createPatterns();

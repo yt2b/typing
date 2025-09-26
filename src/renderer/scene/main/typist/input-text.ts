@@ -1,4 +1,4 @@
-import { Acceptor } from '../../../../game/scene/main/typing/acceptor';
+import { Acceptor } from '../../../../game/scene/main/typing/acceptor/acceptor';
 import { Vector2 } from '../../../commons/vector';
 import { Text } from '../../../commons/text/text';
 

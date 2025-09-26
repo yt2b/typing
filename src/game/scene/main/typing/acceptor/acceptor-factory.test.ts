@@ -1,5 +1,5 @@
-import { createNode } from './node';
-import { createPatterns } from './patterns';
+import { createNode } from '../node';
+import { createPatterns } from '../patterns';
 import { Chara, Acceptor } from './acceptor';
 import { AcceptorFactory } from './acceptor-factory';
 

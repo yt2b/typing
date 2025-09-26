@@ -1,5 +1,5 @@
 import { Acceptor, Chara } from './acceptor';
-import { createNode } from './node';
+import { createNode } from '../node';
 
 export class AcceptorFactory {
   patterns: Record<string, string[]>;

@@ -1,5 +1,5 @@
-import { Node } from './node';
-import { NodeSearcher } from './node-searcher';
+import { Node } from '../node';
+import { NodeSearcher } from '../node-searcher';
 import { NNRuleHandler, SmallTsuRuleHandler, SpecialRuleHandler } from './special-rule-handler';
 
 export enum Result {

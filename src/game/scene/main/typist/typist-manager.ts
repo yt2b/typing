@@ -1,4 +1,4 @@
-import { AcceptorFactory } from '../typing/acceptor-factory';
+import { AcceptorFactory } from '../typing/acceptor/acceptor-factory';
 import { Word } from '../../../../word/word';
 import { Typist } from './typist';
 import { Player } from '../player/player';

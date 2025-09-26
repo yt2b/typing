@@ -1,6 +1,6 @@
 import { Typist } from './typist';
 import { Player } from '../player/player';
-import { AcceptorFactory } from '../typing/acceptor-factory';
+import { AcceptorFactory } from '../typing/acceptor/acceptor-factory';
 import { createPatterns } from '../typing/patterns';
 import { EventType } from '../../../event';
 
