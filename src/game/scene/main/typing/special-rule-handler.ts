@@ -17,7 +17,7 @@ export interface SpecialRuleHandler {
    * @param chara 文字
    * @param nextChara charaに次に来る文字
    */
-  getCompletion(chara: Chara, nextChara: Chara): string;
+  getCompletion(chara: Chara, nextChara: Chara | undefined): string;
   /**
    * 現在の予測文字列を返す
    * @param searcher 現在入力中の文字のNodeSearcher
@@ -57,7 +57,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
     return result;
   }
 
-  getCompletion(chara: Chara, nextChara: Chara): string {
+  getCompletion(chara: Chara, nextChara: Chara | undefined): string {
     if (nextChara === undefined || !this.validate(chara, nextChara)) {
       return chara.node.getCompletion();
     }
