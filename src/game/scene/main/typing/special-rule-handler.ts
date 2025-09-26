@@ -111,6 +111,7 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
         const child = chara.node.children.splice(i, 1);
         chara.node.children.unshift(...child);
       }
+      acceptor.updateCompletion();
       return Result.Accept;
     } else {
       return acceptor.step(char);

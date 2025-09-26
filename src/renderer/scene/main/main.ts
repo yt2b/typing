@@ -91,7 +91,7 @@ export class Main implements Scene {
     this.ctx.fillRect(0, 0, this.width, 20);
     this.currentWord.draw('<Space>を押して開始');
     main.manager.typists.forEach((typist, idx) => {
-      this.acceptorTexts[idx].drawRect(typist.acceptor.getCompletion());
+      this.acceptorTexts[idx].drawRect(typist.acceptor.completion);
       this.scoreBoards[idx].draw(typist.score);
     });
   }

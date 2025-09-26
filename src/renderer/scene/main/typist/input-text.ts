@@ -21,7 +21,7 @@ export class InputText {
    */
   draw(acceptor: Acceptor) {
     const history = acceptor.history;
-    const completion = acceptor.getCompletion();
+    const completion = acceptor.completion;
     this.pos.x = (this.width - this.text.getSize(completion).x) / 2;
     // 入力済みの文字は半透明で表示
     this.ctx.globalAlpha = 0.15;

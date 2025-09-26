@@ -27,9 +27,9 @@ describe('Acceptor', () => {
     ['ばん', 'bax', 'bann', 'baxn'],
   ])('completion (text:%s, input:%s,  %s → %s)', (text, input, before_pred, after_pred) => {
     const acceptor = factory.create(text);
-    expect(acceptor.getCompletion()).toEqual(before_pred);
+    expect(acceptor.completion).toEqual(before_pred);
     Array.from(input).forEach((ch) => acceptor.accept(ch));
-    expect(acceptor.getCompletion()).toEqual(after_pred);
+    expect(acceptor.completion).toEqual(after_pred);
   });
 
   test.each([

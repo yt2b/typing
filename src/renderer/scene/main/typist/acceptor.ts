@@ -32,7 +32,7 @@ export class AcceptorText {
    * @param acceptor アクセプター
    */
   draw(acceptor: Acceptor) {
-    this.drawRect(acceptor.getCompletion());
+    this.drawRect(acceptor.completion);
     this.inputText.draw(acceptor);
   }
 }

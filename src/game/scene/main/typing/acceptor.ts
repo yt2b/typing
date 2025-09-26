@@ -11,6 +11,7 @@ export class Acceptor {
   idx: number = 0;
   count: number = 0;
   history: string = '';
+  completion: string = '';
   end: boolean = false;
   charas: Chara[];
   searcher: NodeSearcher;
@@ -20,6 +21,7 @@ export class Acceptor {
     this.charas = charas;
     this.searcher = new NodeSearcher(this.charas[0].node);
     this.specialRuleHandlers = { ん: new NNRuleHandler(), っ: new SmallTsuRuleHandler() };
+    this.updateCompletion();
   }
 
   /**
@@ -57,6 +59,8 @@ export class Acceptor {
         // 次の文字に進む
         this.next();
       }
+    } else {
+      this.updateCompletion();
     }
     return Result.Accept;
   }
@@ -68,13 +72,13 @@ export class Acceptor {
     this.idx += 1;
     this.count = 0;
     this.searcher = new NodeSearcher(this.charas[this.idx].node);
+    this.updateCompletion();
   }
 
   /**
-   * 入力文字全体の予測を返す
-   * @returns
+   * 入力文字全体の予測を更新する
    */
-  getCompletion(): string {
+  updateCompletion() {
     // 入力履歴
     const history = this.history.substring(0, this.history.length - this.count);
     // 現在入力中の文字
@@ -95,7 +99,7 @@ export class Acceptor {
         }
       })
       .reduce((buf, completion) => buf + completion, '');
-    return history + current + completion;
+    this.completion = history + current + completion;
   }
 }
 
