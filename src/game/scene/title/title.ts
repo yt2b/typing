@@ -82,7 +82,7 @@ export class Title implements Scene {
   runFadeOut(_?: string): SceneResult {
     if (this.count >= Title.FADE_FRAMES) {
       const param = this.difficulties[this.idx].param;
-      return { sceneType: SceneType.Main, events: [{ type: EventType.Select }], param: param };
+      return { sceneType: SceneType.Main, param: param };
     }
     return { sceneType: SceneType.Title };
   }
