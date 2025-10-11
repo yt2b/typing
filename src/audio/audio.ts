@@ -26,9 +26,6 @@ export class Audio {
   }
 
   handle_events(events: Event[]) {
-    if (events.length > 0) {
-      console.log(events);
-    }
     events.forEach((event) => {
       switch (event.type) {
         case EventType.Select:
