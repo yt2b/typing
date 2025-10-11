@@ -12,6 +12,7 @@ export class Renderer {
   width: number;
   height: number;
   scenes: Record<SceneType, Scene>;
+  prevSceneType?: SceneType;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
@@ -45,6 +46,10 @@ export class Renderer {
   render(sceneType: SceneType, scene: GameScene) {
     this.ctx.fillStyle = '#f8f8f8';
     this.ctx.fillRect(0, 0, this.width, this.height);
+    if (sceneType !== this.prevSceneType) {
+      this.prevSceneType = sceneType;
+      this.scenes[sceneType].initialize();
+    }
     this.scenes[sceneType].render(scene);
   }
 }
