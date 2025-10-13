@@ -33,7 +33,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
   acceptable: boolean = false;
 
   accept(acceptor: Acceptor, char: string): Result {
-    if (char != 'n' && this.acceptable) {
+    if (this.acceptable) {
       // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
       const consonants = acceptor.charas[acceptor.idx + 1].getConsonants();
       if (consonants.find((c) => c == char)) {
