@@ -1,7 +1,7 @@
 const singlePatterns: Record<string, string[]> = {
   あ: ['a'],
   い: ['i', 'yi'],
-  う: ['u'],
+  う: ['u', 'wu'],
   え: ['e'],
   お: ['o'],
   か: ['ka', 'ca'],
