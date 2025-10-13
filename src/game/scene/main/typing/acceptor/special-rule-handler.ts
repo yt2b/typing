@@ -44,10 +44,9 @@ export class NNRuleHandler implements SpecialRuleHandler {
     const result = acceptor.step(char);
     if (result == Result.Accept) {
       // acceptableフラグが立つのは以下の条件を全て満たす場合
-      // 1. 現在の文字が「ん」であり
-      // 2. 現在「n」が1回だけ入力されている
-      // 3. 次に入力する文字が存在する
-      // 4. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
+      // 1. 現在「n」が1回だけ入力されている
+      // 2. 次に入力する文字が存在する
+      // 3. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
       const history = acceptor.searcher.history;
       const validateHistory = history.length == 1 && history[0] == 'n';
       const idx = acceptor.idx;
