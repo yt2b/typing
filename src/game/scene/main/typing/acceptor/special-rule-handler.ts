@@ -34,9 +34,9 @@ export class NNRuleHandler implements SpecialRuleHandler {
 
   accept(acceptor: Acceptor, char: string): Result {
     if (this.acceptable) {
-      // charと次に来る文字の子音のいずれかが一致していたら次の文字に進む
-      const consonants = acceptor.charas[acceptor.idx + 1].getConsonants();
-      if (consonants.find((c) => c == char)) {
+      // charと次に来る文字の先頭のいずれかが一致していたら次の文字へ進む
+      const children = acceptor.charas[acceptor.idx + 1].node.children?.map((child) => child.char);
+      if (children?.find((c) => c == char)) {
         this.acceptable = false;
         acceptor.next();
       }
@@ -46,7 +46,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
       // acceptableフラグが立つのは以下の条件を全て満たす場合
       // 1. 現在「n」が1回だけ入力されている
       // 2. 次に入力する文字が存在する
-      // 3. 次に入力する文字があ行、な行、や行、「ん」以外の平仮名
+      // 3. 次に入力する文字があ行、な行、や行、「ん」以外
       const history = acceptor.searcher.history;
       const validateHistory = history.length == 1 && history[0] == 'n';
       const idx = acceptor.idx;
@@ -64,7 +64,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
   }
 
   getCurrentCompletion(searcher: NodeSearcher, nextChara: Chara | undefined): string {
-    if (nextChara === undefined || /[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+    if (nextChara === undefined || /[あ-おな-のやゆよん]/.test(nextChara.value)) {
       return searcher.getCompletion();
     }
     if (searcher.history.length == 0 || (searcher.history.length == 1 && searcher.history[0] == 'n')) {
@@ -81,7 +81,7 @@ export class NNRuleHandler implements SpecialRuleHandler {
    */
   validate(chara: Chara, nextChara: Chara | undefined): boolean {
     if (chara.value == 'ん' && nextChara !== undefined) {
-      return !/[あ-おな-のやゆよんーa-z0-9!?,.[\]]/.test(nextChara.value);
+      return !/[あ-おな-のやゆよん]/.test(nextChara.value);
     }
     return false;
   }
