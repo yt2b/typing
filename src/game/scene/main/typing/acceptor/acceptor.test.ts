@@ -40,6 +40,7 @@ describe('Acceptor', () => {
     ['きゅう', ['kyuu', 'kilyuu', 'kixyuu']],
     ['ばっち', ['batti', 'baltuti', 'baxtuti', 'baltsuti', 'baxtsuti']],
     ['ばっち', ['bacchi', 'baltuchi', 'baxtuchi', 'baltsuchi', 'baxtsuchi']],
+    ['すっぁ', ['sulla', 'sultula', 'sultuxa', 'suxxa', 'suxtuxa', 'suxtula']],
   ])('Input multiple patterns (text: %s, inputs: %s)', (text, inputs) => {
     inputs.forEach((input) => {
       const acceptor = factory.create(text);
