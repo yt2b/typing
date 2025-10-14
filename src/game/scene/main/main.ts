@@ -103,6 +103,7 @@ export class Main implements Scene {
         battle = Result.Battle.Lose;
       }
       const statistics = {
+        timeLimit: this.timeLimit,
         battle: battle,
         score: human.score,
         countTotalTyping: human.countTotalTyping,

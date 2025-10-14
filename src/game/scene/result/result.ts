@@ -3,6 +3,7 @@ import { SceneType } from '../../game';
 import { Scene, SceneResult } from '../scene';
 
 export interface Statistics {
+  timeLimit: number;
   battle: number;
   score: number;
   countTotalTyping: number;
