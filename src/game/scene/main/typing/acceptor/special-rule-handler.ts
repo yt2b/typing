@@ -92,15 +92,23 @@ export class NNRuleHandler implements SpecialRuleHandler {
  */
 export class SmallTsuRuleHandler implements SpecialRuleHandler {
   accept(acceptor: Acceptor, char: string): Result {
-    const nextChara = acceptor.charas[acceptor.idx + 1];
-    if (nextChara === undefined) {
-      return acceptor.step(char);
+    if (acceptor.step(char) == Result.Accept) {
+      return Result.Accept;
     }
+    // 次に来る文字を判定する
+    const nextChara = acceptor.charas[acceptor.idx + 1];
+    if (nextChara === undefined || /[あ-おな-のんーa-z0-9!?,.[\]]/.test(nextChara.value)) {
+      return Result.Reject;
+    }
+    const historyLength = acceptor.searcher.history.length;
     const consonants = nextChara.getConsonants();
-    // 「っ」を次の文字の子音で入力可能かの判定
-    if (acceptor.searcher.history.length == 0 && char != 'n' && consonants.find((c) => c == char)) {
+    // 「っ」を次の文字の子音で入力可能か判定する
+    if (historyLength <= 1 && consonants.find((c) => c == char)) {
       acceptor.history += char;
       acceptor.next();
+      if (historyLength == 1) {
+        acceptor.step(char);
+      }
       // 次の文字の予測を変更する
       const chara = acceptor.charas[acceptor.idx];
       const consonants = chara.getConsonants();
@@ -112,9 +120,8 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
       }
       acceptor.updateCompletion();
       return Result.Accept;
-    } else {
-      return acceptor.step(char);
     }
+    return Result.Reject;
   }
 
   getCompletion(chara: Chara, nextChara: Chara | undefined): string {
