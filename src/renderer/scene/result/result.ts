@@ -60,7 +60,7 @@ export class Result implements Scene {
     this.statistics.draw('スコア', new Vector2(160, 150));
     this.statistics.draw('総打鍵数', new Vector2(160, 210));
     this.statistics.draw('ミス数', new Vector2(160, 270));
-    this.statistics.draw('正確率', new Vector2(160, 330));
+    this.statistics.draw('正確性', new Vector2(160, 330));
     const ss = result.statistics;
     if (ss !== undefined) {
       this.statistics.draw(`${ss.score}`, new Vector2(460, 150));
