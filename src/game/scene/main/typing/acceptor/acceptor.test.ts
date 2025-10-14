@@ -38,6 +38,7 @@ describe('Acceptor', () => {
     ['たんい', ['tanni', 'taxni']],
     ['そんな', ['sonnna', 'soxnna']],
     ['きゅう', ['kyuu', 'kilyuu', 'kixyuu']],
+    ['よん!', ['yon!', 'yonn!', 'yoxn!']],
     ['ばっち', ['batti', 'baltuti', 'baxtuti', 'baltsuti', 'baxtsuti']],
     ['ばっち', ['bacchi', 'baltuchi', 'baxtuchi', 'baltsuchi', 'baxtsuchi']],
     ['すっぁ', ['sulla', 'sultula', 'sultuxa', 'suxxa', 'suxtuxa', 'suxtula']],
@@ -55,7 +56,6 @@ describe('Acceptor', () => {
     ['たん', 'tan'],
     ['たんい', 'tani'],
     ['どんな', 'donna'],
-    ['よん!', 'yon!'],
   ])('Input incorrect patterns (text: %s, inputs: %s)', (text, input) => {
     const acceptor = factory.create(text);
     Array.from(input).forEach((char) => acceptor.accept(char));

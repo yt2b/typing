@@ -8,13 +8,13 @@ const patterns = createPatterns();
 describe('NNRuleHandler', () => {
   const chara = new Chara('ん', createNode(patterns['ん']));
 
-  test.each(['か', 'し', 'た', 'ふ'])('Return special completion (%s)', (nextChar) => {
+  test.each(['か', 'し', 'た', 'ふ', 'ー', '1', ',', '.', 'a'])('Return special completion (%s)', (nextChar) => {
     const handler = new NNRuleHandler();
     const nextChara = new Chara(nextChar, createNode(patterns[nextChar]));
     expect(handler.getCompletion(chara, nextChara)).toEqual('n');
   });
 
-  test.each(['え', 'に', 'よ', 'ん', 'a', undefined])('Return normal completion (%s)', (nextChar) => {
+  test.each(['え', 'に', 'よ', 'ん', undefined])('Return normal completion (%s)', (nextChar) => {
     const handler = new NNRuleHandler();
     const nextChara = nextChar === undefined ? undefined : new Chara(nextChar, createNode(patterns[nextChar]));
     const expected = chara.node.getCompletion();
