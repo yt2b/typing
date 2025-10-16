@@ -20,11 +20,4 @@ describe('AcceptorFactory', () => {
     const factory = new AcceptorFactory(createPatterns());
     expect(factory.split('にゅうりょく')).toEqual(['にゅ', 'う', 'りょ', 'く']);
   });
-
-  test('Get consonant', () => {
-    const factory = new AcceptorFactory(createPatterns());
-    expect(factory.getConsonants('あ')).toEqual([]);
-    expect(factory.getConsonants('さ')).toEqual(['s']);
-    expect(factory.getConsonants('ち')).toEqual(['t', 'c']);
-  });
 });

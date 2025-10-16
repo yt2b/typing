@@ -41,23 +41,4 @@ export class AcceptorFactory {
     ary.push(buf + text.charAt(text.length - 1));
     return ary;
   }
-
-  /**
-   * 子音を取得する
-   * @param char 入力文字
-   * @returns 子音 (あ行と「ん」の場合は空配列)
-   */
-  getConsonants(char: string): string[] {
-    switch (char) {
-      case 'あ':
-      case 'い':
-      case 'う':
-      case 'え':
-      case 'お':
-      case 'ん':
-        return [];
-      default:
-        return this.patterns[char].map((pattern) => pattern.charAt(0));
-    }
-  }
 }
