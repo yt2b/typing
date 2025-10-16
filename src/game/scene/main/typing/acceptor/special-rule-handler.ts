@@ -109,11 +109,14 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
       if (historyLength == 1) {
         acceptor.step(char);
       }
-      // 次の文字のノードを変更する
       const chara = acceptor.charas[acceptor.idx];
-      const idx = chara.getConsonants().findIndex((consonant) => consonant == char);
-      const children = chara.node.children?.splice(idx, 1);
-      chara.node.children = children;
+      const consonants = chara.getConsonants();
+      if (consonants.length > 1) {
+        // 次の文字のノードを変更する
+        const idx = consonants.findIndex((consonant) => consonant == char);
+        const children = chara.node.children?.splice(idx, 1);
+        chara.node.children = children;
+      }
       acceptor.updateCompletion();
       return Result.Accept;
     }
