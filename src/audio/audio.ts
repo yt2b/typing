@@ -14,7 +14,7 @@ export class Audio {
   async load() {
     const names = ['select', 'decision', 'typing0', 'typing1', 'miss', 'complete'];
     names.forEach(async (name) => {
-      const res = await fetch(`assets/audio/${name}.mp3`);
+      const res = await fetch(`audio/${name}.mp3`);
       const arrayBuffer = await res.arrayBuffer();
       const audioBuffer = await this.context.decodeAudioData(arrayBuffer);
       this.sources[name] = audioBuffer;
