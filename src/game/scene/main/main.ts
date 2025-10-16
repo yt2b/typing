@@ -53,7 +53,7 @@ export class Main implements Scene {
       const npc = new Npc(accuracy, kpm, aveStartTime);
       this.manager.setPlayers([this.human, npc]);
     }
-    this.manager.setNextText();
+    this.manager.setNextWord();
   }
 
   update(key?: string): SceneResult {

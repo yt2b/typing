@@ -30,7 +30,7 @@ export class TypistManager {
   /**
    * 次のワードを設定する
    */
-  setNextText() {
+  setNextWord() {
     this.currentWord = this.nextWord;
     this.nextWord = this.words[Math.floor(Math.random() * this.words.length)];
     for (const typist of this.typists) {
@@ -55,7 +55,7 @@ export class TypistManager {
     if (idx != -1) {
       // 完了したプレイヤーにスコアを加算
       this.typists[idx].score += 1;
-      this.setNextText();
+      this.setNextWord();
       events.push({ type: EventType.Completed, payload: { idx: idx, isPerfect: false } });
     }
     return events;
