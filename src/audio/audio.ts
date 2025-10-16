@@ -3,9 +3,12 @@ import { Event, EventType } from '../game/event';
 export class Audio {
   sources: Record<string, AudioBuffer> = {};
   context: AudioContext;
+  gainNode: GainNode;
 
   constructor() {
     this.context = new AudioContext();
+    this.gainNode = this.context.createGain();
+    this.gainNode.gain.value = 0.4;
   }
 
   async load() {
@@ -21,7 +24,7 @@ export class Audio {
   play(name: string) {
     const source = this.context.createBufferSource();
     source.buffer = this.sources[name];
-    source.connect(this.context.destination);
+    source.connect(this.gainNode).connect(this.context.destination);
     source.start(0);
   }
 
