@@ -114,9 +114,9 @@ export class SmallTsuRuleHandler implements SpecialRuleHandler {
       const consonants = chara.getConsonants();
       const i = consonants.findIndex((consonant) => consonant == char);
       if (i > 0 && chara.node.children !== undefined) {
-        // ノードの順番を変更する
-        const child = chara.node.children.splice(i, 1);
-        chara.node.children.unshift(...child);
+        // ノードの構成を変更する
+        const children = chara.node.children.splice(i, 1);
+        chara.node.children = children;
       }
       acceptor.updateCompletion();
       return Result.Accept;

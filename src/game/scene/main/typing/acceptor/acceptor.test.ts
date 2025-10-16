@@ -56,6 +56,7 @@ describe('Acceptor', () => {
     ['たん', 'tan'],
     ['たんい', 'tani'],
     ['どんな', 'donna'],
+    ['にっか', 'nicka'],
   ])('Input incorrect patterns (text: %s, inputs: %s)', (text, input) => {
     const acceptor = factory.create(text);
     Array.from(input).forEach((char) => acceptor.accept(char));
