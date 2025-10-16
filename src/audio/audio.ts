@@ -35,6 +35,7 @@ export class Audio {
           this.play('decision');
           break;
         case EventType.Start:
+          this.play('decision');
           break;
         case EventType.Typing:
           break;
