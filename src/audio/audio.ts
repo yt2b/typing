@@ -9,7 +9,7 @@ export class Audio {
   }
 
   async load() {
-    const names = ['select', 'decision'];
+    const names = ['select', 'decision', 'typing0', 'typing1', 'miss', 'complete'];
     names.forEach(async (name) => {
       const res = await fetch(`assets/audio/${name}.mp3`);
       const arrayBuffer = await res.arrayBuffer();
@@ -38,10 +38,14 @@ export class Audio {
           this.play('decision');
           break;
         case EventType.Typing:
+          const { idx } = event.payload!;
+          this.play(`typing${idx}`);
           break;
         case EventType.MissTyping:
+          this.play('miss');
           break;
         case EventType.Completed:
+          this.play('complete');
           break;
       }
     });
