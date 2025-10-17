@@ -30,7 +30,7 @@ export class Title implements Scene {
     this.difficulties = [
       { name: '初級', param: { timeLimit: 30000, accuracy: 0.8, kpm: 180, aveStartTime: 1500 } },
       { name: '中級', param: { timeLimit: 45000, accuracy: 0.9, kpm: 400, aveStartTime: 1000 } },
-      { name: '上級', param: { timeLimit: 60000, accuracy: 0.95, kpm: 530, aveStartTime: 1000 } },
+      { name: '上級', param: { timeLimit: 60000, accuracy: 0.95, kpm: 580, aveStartTime: 1000 } },
     ];
   }
 
