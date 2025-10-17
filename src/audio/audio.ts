@@ -40,10 +40,11 @@ export class Audio {
         case EventType.Start:
           this.play('decision');
           break;
-        case EventType.Typing:
+        case EventType.Typing: {
           const { idx } = event.payload!;
           this.play(`typing${idx}`);
           break;
+        }
         case EventType.MissTyping:
           this.play('miss');
           break;
