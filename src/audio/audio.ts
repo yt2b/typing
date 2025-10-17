@@ -8,7 +8,7 @@ export class Audio {
   constructor() {
     this.context = new AudioContext();
     this.gainNode = this.context.createGain();
-    this.gainNode.gain.value = 0.4;
+    this.gainNode.gain.value = 0.3;
   }
 
   async load() {
