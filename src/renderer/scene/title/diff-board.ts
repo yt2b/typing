@@ -24,12 +24,12 @@ export class DiffBoard {
     this.isSelected = false;
     const height = this.largeText.getSize('A').y;
     const y = pos.y + (this.size.y + height) / 2;
-    this.difficultyTextPos = new Vector2(pos.x + 50, y);
+    this.difficultyTextPos = new Vector2(pos.x + 30, y);
     const smallTextWidth = this.smallText.getSize('A').y;
     const smallTextY = this.pos.y + (this.size.y + smallTextWidth) / 2;
-    this.timeLimitTextPos = new Vector2(this.difficultyTextPos.x + 200, smallTextY - smallTextWidth * 1.5);
-    this.speedTextPos = new Vector2(this.difficultyTextPos.x + 200, smallTextY);
-    this.accuracyTextPos = new Vector2(this.difficultyTextPos.x + 200, smallTextY + smallTextWidth * 1.5);
+    this.timeLimitTextPos = new Vector2(this.difficultyTextPos.x + 170, smallTextY - smallTextWidth * 1.5);
+    this.speedTextPos = new Vector2(this.difficultyTextPos.x + 170, smallTextY);
+    this.accuracyTextPos = new Vector2(this.difficultyTextPos.x + 170, smallTextY + smallTextWidth * 1.5);
   }
 
   render(diff: Difficultiy) {
@@ -38,7 +38,7 @@ export class DiffBoard {
     this.ctx.globalAlpha = this.isSelected ? 1.0 : 0.05;
     this.largeText.draw(diff.name, this.difficultyTextPos);
     this.smallText.draw(`制限時間: ${diff.param.timeLimit / 1000}秒`, this.timeLimitTextPos);
-    this.smallText.draw(`NPCの速度: ${(diff.param.kpm / 60).toFixed(1)}文字/秒`, this.speedTextPos);
+    this.smallText.draw(`NPCの速度: 最大${(diff.param.kpm / 60).toFixed(1)}文字/秒`, this.speedTextPos);
     this.smallText.draw(`NPCの正確性: ${diff.param.accuracy * 100}%`, this.accuracyTextPos);
     this.ctx.globalAlpha = 1.0;
   }
