@@ -4,6 +4,9 @@ NPCと入力速度を競うタイピングゲームです。
 
 <img width="847" height="636" alt="screenshot" src="https://github.com/user-attachments/assets/74c6cce5-0bd8-4230-8f35-e31f37780050" />
 
+以下のページで遊べます。※**音が鳴ります**  
+https://yt2b.github.io/typing/
+
 ## セットアップ
 
 ```
