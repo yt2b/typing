@@ -7,6 +7,10 @@ NPCと入力速度を競うタイピングゲームです。
 以下のページで遊べます。※**音が鳴ります**  
 https://yt2b.github.io/typing/
 
+## 解説記事
+
+https://qiita.com/k-yaina60/items/cb83fa66af53bbd6c14f
+
 ## セットアップ
 
 ```
